@@ -2,7 +2,6 @@ package frc.everlib.subsystems.motors.subsystems;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -121,10 +120,6 @@ public class MotorController implements SpeedController {
     @Override
     public void set(double speed) {
         m_obj.set(speed);
-    }
-
-    public void set(Supplier<Double> speed) {
-        set(speed.get());
     }
 
     @Override

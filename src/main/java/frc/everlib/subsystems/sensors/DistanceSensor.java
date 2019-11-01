@@ -7,18 +7,23 @@
 
 package frc.everlib.subsystems.sensors;
 
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.everlib.utils.ranges.Range;
 
 /**
  * Add your docs here.
  */
-public abstract class DistanceSensor {
+public abstract class DistanceSensor implements PIDSource {
     
     private Range m_absoluteLimits;
     private double m_offset;
     private String m_subsystemName;
-    boolean m_killSwitch;
+    private PIDSourceType m_pidType;
+
+    private boolean m_killSwitch;
+
 
     public DistanceSensor() {
         this( (v) -> true, 0);
@@ -74,6 +79,22 @@ public abstract class DistanceSensor {
         return m_subsystemName;
     }
 
+    public boolean killed() {
+        return m_killSwitch;
+    }
 
-    
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSourceType) {
+        m_pidType = pidSourceType;
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        return m_pidType;
+    }
+
+    @Override
+    public double pidGet() {
+        return getDistance();
+    }
 }

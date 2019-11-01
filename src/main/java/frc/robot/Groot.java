@@ -15,7 +15,6 @@ import frc.everlib.subsystems.motors.subsystems.DriveTank;
 import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
 import frc.everlib.subsystems.pistons.subsystems.PistonSubsystem;
 import frc.everlib.utils.ranges.MinLimit;
-import frc.robot.SubsystemConstants.GripperConstants;
 import frc.robot.commands.ElevatorDefault;
 
 /**
@@ -25,21 +24,26 @@ import frc.robot.commands.ElevatorDefault;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Groot extends TimedRobot implements SubsystemComponents {
+public class Groot extends TimedRobot implements SubsystemComponents, SubsystemConstants {
   
-  public static final MotorSubsystem 
-    elevator = new MotorSubsystem (
-      "Elevator", ElevatorComponents.distanceSensor, ElevatorComponents.motors),
-
-    cargoGripper = new MotorSubsystem(
+  public static final MotorSubsystem elevator = new MotorSubsystem(
+      "Elevator", ElevatorComponents.distanceSensor, ElevatorComponents.motors);
+    
+  public static final MotorSubsystem cargoGripper = new MotorSubsystem(
       "Cargo Gripper", CargoGripperComponents.distanceSensor, 
       new MinLimit(GripperConstants.cargoDistance), 
       CargoGripperComponents.motors);
 
-  public static final PistonSubsystem 
-    gripperMovement = new PistonSubsystem(GripperMovementComponents.pistons, "Gripper Movement"), 
-    hatchGripper = new PistonSubsystem(GripperPanelComponents.pushPistons, "Panel Gripper"),
-    hatchHolder = new PistonSubsystem(GripperPanelComponents.toungePistons, "Panel Holder");
+
+  public static final PistonSubsystem gripperMovement = new PistonSubsystem(
+    GripperMovementComponents.pistons, "Gripper Movement");
+  
+  public static final PistonSubsystem hatchGripper = new PistonSubsystem(
+    GripperPanelComponents.pushPistons, "Panel Gripper");
+  
+  public static final PistonSubsystem hatchHolder = new PistonSubsystem(
+    GripperPanelComponents.toungePistons, "Panel Holder");
+
 
   public static final DriveTank 
     chassis = new DriveTank("Chassis", ChassisComponents.leftMotors, ChassisComponents.rightMotor);
@@ -73,19 +77,11 @@ public class Groot extends TimedRobot implements SubsystemComponents {
    */
   @Override
   public void robotPeriodic() {
+    gripperMovement.setForward(); //Folded
+    hatchGripper.setForward(); //In
+    hatchHolder.setForward(); //Out
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
   @Override
   public void autonomousInit() {
   }

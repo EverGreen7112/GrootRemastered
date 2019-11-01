@@ -9,17 +9,18 @@ public class DistanceSensorGroup extends DistanceSensor {
     List<DistanceSensor> m_sesnsors;
     int sum;
 
+
     public DistanceSensorGroup(DistanceSensor... sensors) {
         m_sesnsors = List.of(sensors);
     }
-    
+
     @Override
     public double _getDistance() {
         int sum = 0;
-        
+
         for (DistanceSensor sensor : m_sesnsors) {
-            
-            if (sensor.m_killSwitch) {
+
+            if (sensor.killed()) {
                 m_sesnsors.remove(sensor);
                 continue;
             }

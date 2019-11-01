@@ -5,8 +5,6 @@ import frc.everlib.CommandEG;
 import frc.everlib.subsystems.pistons.subsystems.PistonSubsystem;
 
 public class SetPistonSubsystem extends CommandEG {
-  /**Supplier for the state to be set.
-   * When this command executes, the */
   private Value m_state;
   private PistonSubsystem m_pistons;
   

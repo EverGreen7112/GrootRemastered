@@ -18,8 +18,9 @@ public class ElevatorDefault extends CommandEG implements SubsystemConstants.Ele
     }
     
     public final static Switch speedLockSwitch = SwitchHandler.addSwitch("Elevator Stall");
-    double lastSpeed;
-    boolean speedLocked = false;
+
+    private double lastSpeed;
+    private boolean speedLocked = false;
 
     CommandEG baseDefault = new MoveMotorSystem("Elevator Default Movement",
      Groot.elevator, OI.buttonJoystick::getY, speedModifier);

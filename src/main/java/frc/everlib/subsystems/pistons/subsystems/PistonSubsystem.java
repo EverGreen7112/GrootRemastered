@@ -1,8 +1,8 @@
 package frc.everlib.subsystems.pistons.subsystems;
 
-import frc.everlib.subsystems.SubsystemEG;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.everlib.subsystems.SubsystemEG;
 
 /**
  * A generic subsystem which uses pistons for movement.
@@ -76,12 +76,6 @@ public class PistonSubsystem extends SubsystemEG {
         {
             m_piston.set(state);
         }
-    }
-
-
-    public void initDefaultCommand()
-    {
-    
     }
 
 }

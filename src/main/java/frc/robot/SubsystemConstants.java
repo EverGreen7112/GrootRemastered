@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.function.Supplier;
 
 import frc.everlib.shuffleboard.handlers.DashboardConstants;
+import frc.everlib.utils.PIDSettings;
 
 /**
  * SubsystemConstants
@@ -30,11 +31,14 @@ public interface SubsystemConstants {
             laserIntercept =  DashboardConstants.addDouble("Elevator Laser Sensor - Intercept", 0.0),
 
             speedModifier = DashboardConstants.addDouble("Elevator Speed Modifier", 0.7),
+            
             targetSpeedModifier = DashboardConstants.addDouble("Elevator Movement to target speed", 0.7),
 
             bottomStall = DashboardConstants.addDouble("Bottom Levels Stall Power", 0.0),
             middleStall = DashboardConstants.addDouble("Middle Levels Stall Power", 0.13),
             topStall = DashboardConstants.addDouble("Top Levels Stall Power", 0.15);
+
+        PIDSettings pidSettings = new PIDSettings(Groot.elevator, 0, 0, 0);
 
     }
 
@@ -56,6 +60,7 @@ public interface SubsystemConstants {
      */
     public interface ChassisConstants {
         Supplier<Double> 
+        //Speeds
             driveSpeed = DashboardConstants.addDouble("Chassis Speed Modifier", 0.8),
             fastSpeed = DashboardConstants.addDouble("Chassis Speed - Fast", 1.0),
             defenseSpeed = DashboardConstants.addDouble("Chassis Speed - slow", 0.4),
@@ -66,6 +71,9 @@ public interface SubsystemConstants {
             smartPMaxFix = DashboardConstants.addDouble("Chassis Smart P - max fix", 0.8),
             maxStaticFriction = DashboardConstants.addDouble(
                 "Chassis Smart P - max static friction", 0.0115);
+
+            PIDSettings pidSettings = new PIDSettings(Groot.chassis, 0, 0, 0);
+
     }
 
 }
