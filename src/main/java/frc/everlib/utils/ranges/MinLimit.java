@@ -36,7 +36,8 @@ public class MinLimit implements Range {
     }
     
     @Override
-    public boolean inRange(double distance) {
+    public boolean inRange(double distance)
+    {
 
         return distance > m_minDistance.get() - m_tolerance.get();
     }

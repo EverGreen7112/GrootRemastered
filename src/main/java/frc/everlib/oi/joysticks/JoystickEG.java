@@ -1,29 +1,55 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
+// multiplication resistance is the number of steps it takes when you multiply all digits of a number until you get a single digit.
+// so 17's resistance is 1: 1*7 = 7.
+// 876: 8*7*6 = 336: 3*3*6 = 54: 5*4 = 20: 2*0 = 0 4 
+//277,777,788,888,899 is the current record for largest resistance. 11
+//cool.
+// I'm writing a program in C# to find the biggest resistance in a range of numbers
 
 package frc.everlib.oi.joysticks;
 import java.util.Arrays;
 
-import frc.everlib.utils.Adjuster;
 import frc.everlib.oi.OIExceptions;
-import frc.everlib.subsystems.motors.commands.MoveMotorSystem;
-import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
+import frc.everlib.utils.Adjuster;
 
 import edu.wpi.first.wpilibj.Joystick;
 
 
 /**
- * The base class for joystick in the Evergreen Framework.
+ * The base class for {@link Joystick}s in the Evergreen Framework.
  * 
- * A Joystick class to extend the WPILib joystick  and add it more automatic adjusting capabilities.
- * The class contains an {@link Adjuster adjuster} for each of the axes, which can be set using its
- * {@link #setAxisAdjuster(int, Adjuster)} method, as well  
+ * Most importantly, it provides easy methods to ivert and expontiate the joytsick axis,
+ * and allowes {@link #getRawAxis(AxisType) getRawAxis} by {@link AxisType}, for clearer code.
+ * 
+ * For more advance adjustments,this class contains an {@link Adjuster adjuster} for each of the axes, 
+ * which can be set using its {@link #setAxisAdjuster(int, Adjuster)} method.
  */
 public class JoystickEG extends Joystick {
-    
+
+
+    /**number of axes on the joystick */
     private static final int AXES_NUM = 5;
+
+    /**An adjuster which makes no change. 
+     * Since the code requires an adjuster, ff not specified - 
+     * this will be the adjuster for all axesx.*/
     private static final Adjuster<Double> USELESS_ADJUSTER = (val) -> val;
 
+    /**
+     * Whether the joystick is exponential - the position-to-value function ({@link Joystick#getRawAxis(int)} 
+     * is exponential or linear.
+     */
     private boolean m_exponential = false;
+    
+    /**
+     * Whether the joystick is inverted = should we multiply its values by -1?
+     */
     private boolean m_inverted = false;
 
     @SuppressWarnings("unchecked")
@@ -43,14 +69,6 @@ public class JoystickEG extends Joystick {
         super(port);
         this.m_defaultAdjuster = adjuster;
         Arrays.fill(m_adjusters, m_defaultAdjuster);
-    }
-    
-    public void setMovementByAxis(int axNum, MotorSubsystem subsystem)
-    {
-        subsystem.setDefaultCommand(new MoveMotorSystem(
-            String.format("{0} Default Command (move by joytsick's {1})", subsystem.getName(), axNum),
-             subsystem, 
-             () ->  getRawAxis(axNum)));
     }
 
     public void setAxisAdjuster(Joystick.AxisType axis, Adjuster<Double> adjuster)

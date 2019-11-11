@@ -7,8 +7,9 @@
 
 package frc.everlib.shuffleboard.handlers;
 
-import edu.wpi.first.wpilibj.Preferences;
 import frc.everlib.Exceptions;
+
+import edu.wpi.first.wpilibj.Preferences;
 
 /**
  * Add your docs here.

@@ -2,10 +2,10 @@ package frc.everlib.utils;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
 import frc.everlib.shuffleboard.handlers.DashboardConstants;
+import frc.everlib.subsystems.SubsystemEG;
 import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
+import frc.wpilib2020.deps.PIDController;
 
 /**
  * A utillity class to easily keep constant parameters, and to avoid cluttering constructors.
@@ -13,68 +13,27 @@ import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
 public class PIDSettings {
 
     /**Proportional constant supplier*/
-    public final Supplier<Double> kP;
+    private final Supplier<Double> m_P;
     /**Integral Constant supplier*/
-    public final Supplier<Double> kI;
+    private final Supplier<Double> m_I;
     /**Derivative constant supplier */
-    public final Supplier<Double> kD;
+    private final Supplier<Double> m_D;
     /**Feedforward constant supplier*/
-    public final Supplier<Double> kF;
+    private final Supplier<Double> m_F;
     /**Tolernace supplier */
-    public final Supplier<Double> tolerance;
+    private final Supplier<Double> m_tolerance;
 
-    /**The source which supplies the current position / angle / speed */
-    public final PIDSource source;
-
+    private final Supplier<Double> m_period;
     /**The controller to write the information into.*/
-    public final PIDOutput output;
+    private final MotorSubsystem m_subsystem;
 
 
-    /**
-     * Constructs {@link PIDSettings} according to input P, I and D constants and given subsystem.
-     * @param subsystem - The subsystem to use the PID loop on.
-     * @param kP - The proportional constants.
-     * @param kI - The integral constant
-     * @param kD - The derivative constant.
-     */
-    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD) {
+    private final PIDController m_controller;
 
-        this.kP = DashboardConstants.addDouble(subsystem.getName() + " PID - kP", kP);
-        this.kI = DashboardConstants.addDouble(subsystem.getName() + " PID - kI", kI);
-        this.kD = DashboardConstants.addDouble(subsystem.getName() + " PID - kD", kD);
-
-        this.tolerance = () -> 0.0;
-        this.kF = () -> 0.0;
-
-        source = subsystem.getSensor();
-        output = subsystem;
-   
-    }
-
-
-    /**
-     * Constructs {@link PIDSettings} according to input P, I and D constants and given subsystem.
-     * @param subsystem - The subsystem to use the PID loop on.
-     * @param kP - The proportional constants.
-     * @param kI - The integral constant
-     * @param kD - The derivative constant.
-     * @param tolerance - the loop's tolerance; St what point away from the target should the loop
-     * be satisfied?
-     */
-    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD, double tolerance) {
-        this.kP = DashboardConstants.addDouble(subsystem.getName() + " PID - kP", kP);
-        this.kI = DashboardConstants.addDouble(subsystem.getName() + " PID - kI", kI);
-        this.kD = DashboardConstants.addDouble(subsystem.getName() + " PID - kD", kD);
-                
-        this.tolerance = DashboardConstants.addDouble(
-            subsystem.getName() + " PID - Tolerance", tolerance);
-        
-        this.kF = () -> 0.0;
-
-        source = subsystem.getSensor();
-        output = subsystem;
-    }
-
+    private static final double 
+        DEFAULT_TOLEANCE = 0.0,
+        DEFAULT_F  = 0.0,
+        DEFAULT_PERIOD = 0.02;
 
     /**
      * Constructs {@link PIDSettings} according to input P, I and D and F constants and given subsystem.
@@ -85,18 +44,111 @@ public class PIDSettings {
      * @param tolerance - the loop's tolerance; St what point away from the target should the loop
      * be satisfied?
      * @param kF - The feed-forward constant.
+     * @param period - The time between each controller update. 
     */
-    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD, double tolerance, double kF) {
+    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD, 
+        double tolerance, double kF, double period) {
 
-        this.kP = DashboardConstants.addDouble(subsystem.getName() + " PID - kP", kP);
-        this.kI = DashboardConstants.addDouble(subsystem.getName() + " PID - kI", kI);
-        this.kD = DashboardConstants.addDouble(subsystem.getName() + " PID - kD", kD);
-        this.kF = DashboardConstants.addDouble(subsystem.getName() + " PID - kF", kF);
+        m_P = DashboardConstants.addDouble(subsystem.getName() + " PID - kP (Value Supplier)", kP);
+        m_I = DashboardConstants.addDouble(subsystem.getName() + " PID - kI (Value Supplier)", kI);
+        m_D = DashboardConstants.addDouble(subsystem.getName() + " PID - kD (Value Supplier)", kD);
+        m_F = DashboardConstants.addDouble(subsystem.getName() + " PID - kF (Value Supplier)", kF);
         
-        this.tolerance = DashboardConstants.addDouble(
+        m_tolerance = DashboardConstants.addDouble(
             subsystem.getName() + " PID - Tolerance", tolerance);
-       
-        source = subsystem.getSensor();
-        output = subsystem::move;
-       }
+        
+        m_period = DashboardConstants.addDouble(
+            subsystem.getName() + " PID - Period", period);   
+
+        m_controller = new PIDController(kP, kI, kD, period);
+        m_controller.setTolerance(tolerance);
+
+        m_subsystem = subsystem;
+    }
+
+    /**
+     * Constructs {@link PIDSettings} according to input P, I and D and F 
+     * constants and given subsystem, with a default period of 0.02.
+     * @param subsystem - The subsystem to use the PIDF loop on.
+     * @param kP - The proportional constants.
+     * @param kI - The integral constant
+     * @param kD - The derivative constant.
+     * @param tolerance - the loop's tolerance; St what point away from the target should the loop
+     * be satisfied?
+     * @param kF - The feed-forward constant.
+    */
+    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD, 
+        double tolerance, double kF) {
+            this(subsystem, kP, kI, kD, tolerance, kF, DEFAULT_PERIOD);
+    }
+
+
+    /**
+     * Constructs {@link PIDSettings} according to input P, I and D
+     * constants and given subsystem, with a default period of 0.02.
+     * @param subsystem - The subsystem to use the PIDF loop on.
+     * @param kP - The proportional constants.
+     * @param kI - The integral constant
+     * @param kD - The derivative constant.
+     * @param tolerance - the loop's tolerance; St what point away from the target should the loop
+     * be satisfied?
+    */
+    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD, 
+        double tolerance) {
+            this(subsystem, kP, kI, kD, tolerance, DEFAULT_F, DEFAULT_PERIOD);
+    }
+
+    /**
+     * Constructs {@link PIDSettings} according to input P, I and D 
+     * constants and given subsystem, with a default period of 0.02 and a default tolerance of 0.
+     * 
+     * @param subsystem - The subsystem to use the PIDF loop on.
+     * @param kP - The proportional constants.
+     * @param kI - The integral constant
+     * @param kD - The derivative constant.
+    */
+    public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD) {
+            this(subsystem, kP, kI, kD, DEFAULT_TOLEANCE, DEFAULT_F, DEFAULT_PERIOD);
+    }
+
+
+    public double kP() {
+        return m_P.get();
+    }
+
+    public double kI() {
+        return m_I.get();
+    }
+
+    public double kD() {
+        return m_D.get();
+    }
+
+    public double kF() {
+        return m_F.get();
+    }
+
+    public double getTolerance() {
+        return m_tolerance.get();
+    }
+
+    public double getMeasurment() {
+        return m_subsystem.getDistance();
+    }
+
+    public double getPeriod() {
+        return m_period.get();
+    }
+
+    public void write(double power) {
+        m_subsystem.move(power);
+    }
+
+    public PIDController getController() {
+        return m_controller;
+    }
+
+    public SubsystemEG getSubsystem() {
+        return m_subsystem;
+    }
 }

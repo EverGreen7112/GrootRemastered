@@ -10,51 +10,17 @@ package frc.everlib.subsystems.sensors;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.everlib.utils.ranges.Range;
+
 
 /**
- * A class for an {@link AnalogInput} Laser {@link DistanceSensor} with a linear voltage-to-distance
- * converter.
+ * Add your docs here.
  */
 public class LaserSensor extends DistanceSensor {
     
-    /**The wrapped {@link AnalogInput} object */
     private AnalogInput sensor;
-
-    /**
-     * The linear voltage-to-distance function parameters
-     */
     private Supplier<Double> m_slope, m_intercept;
 
-    /**
-     * Consructs a new {@link LaserSensor} with distance the distance conversion parameters.
-     * @param port
-     * @param slope
-     * @param intercept
-     */
     public LaserSensor(int port, double slope, double intercept) {
-        sensor = new AnalogInput(port);
-        m_slope = () -> slope;
-        m_intercept = () -> intercept;
-    }
-
-    public LaserSensor(int port, double slope, double intercept, double offset) {
-        super(offset);
-        sensor = new AnalogInput(port);
-        m_slope = () -> slope;
-        m_intercept = () -> intercept;
-    }
-
-    public LaserSensor(int port, double slope, double intercept, Range absoluteLimit) {
-        super(absoluteLimit);
-        sensor = new AnalogInput(port);
-        m_slope = () -> slope;
-        m_intercept = () -> intercept;
-    }
-
-    public LaserSensor(int port, double slope, double intercept, Range absoluteLimit, double offset) {
-        super(absoluteLimit, offset);
         sensor = new AnalogInput(port);
         m_slope = () -> slope;
         m_intercept = () -> intercept;
@@ -62,32 +28,6 @@ public class LaserSensor extends DistanceSensor {
 
     public LaserSensor(int port, Supplier<Double> slope, Supplier<Double> intercept)
     {
-        sensor = new AnalogInput(port);
-        m_slope = slope;
-        m_intercept = intercept;
-    }
-
-    public LaserSensor(int port, Supplier<Double> slope, Supplier<Double> intercept, Range absoluteLimit)
-    {
-        super(absoluteLimit);
-        sensor = new AnalogInput(port);
-        m_slope = slope;
-        m_intercept = intercept;
-    }
-
-    public LaserSensor(int port, Supplier<Double> slope, Supplier<Double> intercept, 
-        Range absoluteLimit, double offset)
-    {
-        super(absoluteLimit, offset);
-        sensor = new AnalogInput(port);
-        m_slope = slope;
-        m_intercept = intercept;
-    }
-
-
-    public LaserSensor(int port, Supplier<Double> slope, Supplier<Double> intercept, double offset)
-    {
-        super(offset);
         sensor = new AnalogInput(port);
         m_slope = slope;
         m_intercept = intercept;
@@ -124,20 +64,7 @@ public class LaserSensor extends DistanceSensor {
     }
 
     @Override
-    protected double _getDistance() {
+    public double _getDistance() {
         return sensor.getVoltage() * m_slope.get() + m_intercept.get();
-    }
-
-    public double getVoltage() {
-        return sensor.getVoltage();
-    }
-
-
-    public String getSubsystem() {
-        return sensor.getSubsystem();
-    }
-
-    public void setSubsystem(Subsystem subsystem) {
-        
     }
 }

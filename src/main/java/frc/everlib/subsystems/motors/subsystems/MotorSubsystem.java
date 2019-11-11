@@ -1,68 +1,60 @@
 package frc.everlib.subsystems.motors.subsystems;
 
+import java.util.List;
 import java.util.Map;
 
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.everlib.subsystems.SubsystemEG;
 import frc.everlib.subsystems.sensors.DistanceSensor;
+import frc.everlib.utils.loggables.LoggableData;
+import frc.everlib.utils.loggables.LoggableDouble;
 import frc.everlib.utils.ranges.Range;
+import frc.wpilib2020.framework.Command;
+
+import edu.wpi.first.wpilibj.PIDOutput;
 
 /**
  * A {@link Subsystem} consisting of one or more motor m_controllers.
  */
 public class MotorSubsystem extends SubsystemEG implements PIDOutput {
-    /** The subsystem's motor controllers. */
+    /**The subsystem's motor controllers. */
     protected MotorController[] m_controllers;
 
-    /** The range in which the subsystem is allowed to move. */
+    /**The range in which the subsystem is allowed to move. */
     protected Range m_Range;
 
-    /** The sensor mesuring the distance the subsystem has gone. */
+    /**The sensor mesuring the distance the subsystem has gone. */
     protected DistanceSensor m_distanceSensor;
-
-    /** The subsystem's default command */
-    protected Command m_defaultCommand;
-
-    public MotorSubsystem(String name, MotorController... motors) {
-        super(name);
+    
+    public MotorSubsystem(String name, MotorController... motors)
+    {
+        super(name);    
         m_controllers = motors;
         m_Range = (v) -> true;
     }
 
     public MotorSubsystem(String name, DistanceSensor distanceSensor, MotorController... motors) {
         super(name);
-
         m_controllers = motors;
-
         m_distanceSensor = distanceSensor;
-        m_distanceSensor.setSubsystem(this);
-
     }
 
-    public MotorSubsystem(String name, DistanceSensor distanceSensor, Range Range, MotorController... motors) {
+    public MotorSubsystem(String name, DistanceSensor sensor, Range Range, MotorController... motors)
+    {
         super(name);
         m_controllers = motors;
-
-        m_distanceSensor = distanceSensor;
-        m_distanceSensor.setSubsystem(this);
-
+        m_distanceSensor = sensor;
         m_Range = Range;
     }
 
-    public MotorSubsystem(String name, DistanceSensor distanceSensor, Range Range, Command defaultCommand,
-            MotorController... motors) {
-        super(name);
-
+    public MotorSubsystem(String name, DistanceSensor distanceSensor, Range Range, 
+        Command defaultCommand, MotorController... motors)
+    {
+        super(name, defaultCommand);
         m_controllers = motors;
-        m_Range = Range;
-
         m_distanceSensor = distanceSensor;
-        m_distanceSensor.setSubsystem(this);
-
-        m_defaultCommand = defaultCommand;
+        m_Range = Range;
     }
+
 
     public void move(double speed) {
         for (MotorController control : m_controllers) {
@@ -70,45 +62,56 @@ public class MotorSubsystem extends SubsystemEG implements PIDOutput {
         }
     }
 
-    public void set(int index, double speed) {
-        if (canMove())
+    public void set(int index, double speed)
+    {
+        if(canMove()) 
             m_controllers[index].set(speed);
     }
 
-    public void set(Map<Integer, Double> speedMap) {
-        if (canMove())
+    public void set(Map<Integer, Double> speedMap)
+    {
+        if(canMove()) 
             speedMap.forEach(this::set);
     }
 
-    public void stop() {
-        for (MotorController motor : m_controllers) {
+    public void stop()
+    {
+        for(MotorController motor : m_controllers)
+        {
             motor.stopMotor();
         }
 
-    }
-
-    public boolean canMove() {
-        return m_Range.inRange(getDistance()) && m_subsystemSwitch.get();
-    }
-
-    public MotorController[] getMotorControllers() {
-        return m_controllers;
     }
 
     public DistanceSensor getSensor() {
         return m_distanceSensor;
     }
 
+    public MotorController[] getMotorControllers() {
+        return m_controllers;
+    }
+
+    public boolean canMove() {
+        return m_Range.inRange(getDistance()) && m_subsystemSwitch.get();
+    }
+
     @Override
-    protected void initDefaultCommand() {
-        if (m_defaultCommand != null) {
-            setDefaultCommand(m_defaultCommand);
+    public List<LoggableData> getLoggableData() {
+        List<LoggableData> loggables = super.getLoggableData();
+
+
+        for (int i = 0; i < m_controllers.length; i++) {
+            loggables.add(new LoggableDouble(
+                getName() + " - Controller #" + i + " speed", m_controllers[i]::get));            
         }
+
+        return super.getLoggableData();
     }
 
-    @Override
-    public void pidWrite(double output) {
-        move(output);
+	@Override
+	public void pidWrite(double output) {
+		move(output);
+	}
 
-    }
+    
 }

@@ -7,10 +7,11 @@
 
 package frc.everlib.subsystems.sensors;
 
+import frc.everlib.subsystems.SubsystemEG;
+import frc.everlib.utils.ranges.Range;
+
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.everlib.utils.ranges.Range;
 
 /**
  * Add your docs here.
@@ -71,7 +72,7 @@ public abstract class DistanceSensor implements PIDSource {
         return getDistance() < maxDistance;
     }
 
-    public void setSubsystem(Subsystem subsystem) {
+    public void setSubsystem(SubsystemEG subsystem) {
         m_subsystemName = subsystem.getName();
     }
 

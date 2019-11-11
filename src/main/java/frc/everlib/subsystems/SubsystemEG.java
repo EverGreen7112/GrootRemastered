@@ -1,31 +1,36 @@
 package frc.everlib.subsystems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import frc.everlib.Exceptions;
 import frc.everlib.shuffleboard.handlers.Switch;
 import frc.everlib.shuffleboard.handlers.SwitchHandler;
 import frc.everlib.subsystems.sensors.DistanceSensor;
+import frc.everlib.subsystems.sensors.DistanceSensorGroup;
+import frc.everlib.utils.loggables.LoggableData;
+import frc.everlib.utils.loggables.LoggableDouble;
+import frc.everlib.utils.loggables.LoggableObject;
+import frc.wpilib2020.framework.Command;
+import frc.wpilib2020.framework.SubsystemBase;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * The subsys
  */
-public abstract class SubsystemEG extends Subsystem implements Exceptions {
+public abstract class SubsystemEG extends SubsystemBase implements Exceptions, LoggableObject {
 
     protected Switch m_subsystemSwitch;
-    private Command m_defaultCommand;
     private DistanceSensor m_distanceSensor;
 
     public SubsystemEG(String name) {
-        super(name);
+        setName(name);
         m_subsystemSwitch  = SwitchHandler.addSwitch(name);
     }
 
     public SubsystemEG(String name, Command defaultCommand) {
-        
         this(name);
-        m_defaultCommand = defaultCommand;
+        setDefaultCommand(defaultCommand);
     }
 
     public SubsystemEG(String name, Command defaultCommand, DistanceSensor distanceSesnsor) {
@@ -41,12 +46,6 @@ public abstract class SubsystemEG extends Subsystem implements Exceptions {
         return m_subsystemSwitch.get();
     }
 
-    @Override
-    protected void initDefaultCommand() {
-        if (m_defaultCommand != null) {
-            setDefaultCommand(m_defaultCommand);
-        }
-    }
 
     public double getDistance() throws SensorDoesNotExistException {
         try {
@@ -57,4 +56,20 @@ public abstract class SubsystemEG extends Subsystem implements Exceptions {
             throw new SensorDoesNotExistException(getName() + " does not have a distance sensor!");
         }
     }
+
+    @Override
+    public List<LoggableData> getLoggableData() {
+        List<LoggableData> loggables = new ArrayList<>();
+        
+        if (m_distanceSensor.getClass() == DistanceSensorGroup.class) {
+            DistanceSensorGroup sensorGroup = (DistanceSensorGroup)m_distanceSensor;
+            loggables.addAll(sensorGroup.getLoggableData());
+        }
+
+        loggables.add(new LoggableDouble(getName() + " - distance", () -> getDistance()));
+
+        return loggables;
+    }
+
+
 }

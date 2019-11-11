@@ -2,10 +2,13 @@ package frc.everlib.subsystems.motors.subsystems;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
@@ -16,7 +19,13 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
  * @author Atai Ambus
  */
 public class MotorController implements SpeedController {
-    
+    /**
+     * MotorInitialize
+     */
+    public interface MotorInitializer {
+        SpeedController generate(int channel);
+    }
+
     /**
      * The wrapped {@link SpeedController} object.
      */
@@ -39,47 +48,30 @@ public class MotorController implements SpeedController {
      * 
      * @param ports - The roborio ports the voltage controllers conect to.
      */
-    public MotorController(ControllerType type, int... ports)
-    {
-        SpeedController controller;
-
+    public MotorController(ControllerType type, int... ports) {
+        
+        SpeedController firstMotor;
+        SpeedController[] motors;
+        SpeedController finalController;
+        
         //Check fot the type, then create the aproptiate SpeedControllers and initalize the
         //Wrapped object as their SpeedControllerGroup.
 
-        if(type == ControllerType.VICTOR_SPX) 
+        //The speed controllers to construct the Group with.
+        motors = new SpeedController[ports.length];
+        firstMotor = type.m_init.generate(ports[0]);
+        
+        //intializing them.
+        for(int i = 1; i < ports.length; i++)
         {
-            //The speed controllers to construct the Group with.
-            SpeedController[] motors = new SpeedController[ports.length];
-            SpeedController firstMotor = new WPI_VictorSPX(ports[0]);
+            finalController = type.initlize(ports[i]);
+            m_motors.add(finalController);
+            motors[i-1] = finalController; 
+        }   
+
+        //Initializing the wrapped object.
+        m_obj = new SpeedControllerGroup(firstMotor, motors);
             
-            //intializing them.
-            for(int i = 1; i < ports.length; i++)
-            {
-                controller = new WPI_VictorSPX(ports[i]);
-                m_motors.add(controller);
-                motors[i-1] = controller; 
-            }
-
-            //Initializing the wrapped object.
-            m_obj = new SpeedControllerGroup(firstMotor, motors);
-        }
-
-        else if(type == ControllerType.TALON_SRX)
-        {
-            //The speed controller to construct the Group with.
-            SpeedController[] motors = new SpeedController[ports.length];
-            SpeedController firstMotor = new WPI_TalonSRX(ports[0]);
-            
-            for(int i = 1; i < ports.length; i++)
-            {
-                controller = new WPI_TalonSRX(ports[i]);
-                
-                m_motors.add(controller);
-                motors[i-1] = controller; 
-            }
-
-            m_obj = new SpeedControllerGroup(firstMotor, motors);
-        }
     }
 
     /**
@@ -122,6 +114,10 @@ public class MotorController implements SpeedController {
         m_obj.set(speed);
     }
 
+    public void set(Supplier<Double> speed) {
+        set(speed.get());
+    }
+
     @Override
     public double get() {
         return m_obj.get();
@@ -147,15 +143,22 @@ public class MotorController implements SpeedController {
         m_obj.stopMotor();
     }
 
-    public ArrayList<SpeedController> getSpeedControllers() {
-        return m_motors;
-    }
-
     /**A controller model - Victor SPX, Talon SRX, ect. */
     public enum ControllerType
     {
-        VICTOR_SPX,
-        VICTOR_SP,
-        TALON_SRX;
+        VICTOR_SPX(WPI_VictorSPX::new),
+        TALON_SRX(WPI_TalonSRX::new),
+        JAGUAR(Jaguar::new),
+        SPARK(Spark::new);
+
+        MotorInitializer m_init;
+
+        SpeedController initlize(int channel) {
+            return m_init.generate(channel);
+        }
+
+        ControllerType(MotorInitializer init) {
+            m_init = init;
+        }
     }
 }

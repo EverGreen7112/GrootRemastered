@@ -1,7 +1,8 @@
 package frc.everlib.subsystems.sensors;
 
-import edu.wpi.first.wpilibj.Encoder;
 import frc.everlib.utils.ranges.Range;
+
+import edu.wpi.first.wpilibj.Encoder;
 
 /**
  * A wrapper class for {@link Encoder} which extends {@link DistanceSensor},
@@ -30,6 +31,7 @@ public class EncoderEG extends DistanceSensor {
         super(absoluteLimit, offset);
         m_encoder = new Encoder(portA, portB);
     }
+
 
     /**
      * Constructs an {@link EncoderEG} object according to input sources, encoder offset and 
@@ -98,10 +100,18 @@ public class EncoderEG extends DistanceSensor {
         m_encoder.setDistancePerPulse(1/ticksPerRevolution * diameter * Math.PI);
     }
 
+    /**Resets the encoder's distance to 0. */
     public void reset() {
         m_encoder.reset();
     }
 
+    /**
+     * Since {@link EncoderEG} is a wrapped class, and the encoder is usually used exclusively
+     * for relatively simple distance mesurement, most of its methods were not implemented directly.
+     * This method return the wrapped {@link Encoder} object for the programmer to use.
+     * 
+     * @return the wrapped encoder object.
+     */
     public Encoder getEncoder() {
         return m_encoder;
     }

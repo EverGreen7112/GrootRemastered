@@ -1,8 +1,13 @@
 package frc.everlib.subsystems.pistons.subsystems;
 
+import frc.everlib.subsystems.SubsystemEG;
+import frc.everlib.utils.loggables.LoggableData;
+import frc.everlib.utils.loggables.LoggableString;
+
+import java.util.List;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.everlib.subsystems.SubsystemEG;
 
 /**
  * A generic subsystem which uses pistons for movement.
@@ -64,12 +69,6 @@ public class PistonSubsystem extends SubsystemEG {
         return m_piston.get().compareTo(Value.kOff) == 0;
     }
 
-    public Value get()
-    {
-        return m_piston.get();
-    }
-
-
     public void set(Value state)
     {
         if(m_subsystemSwitch.get())
@@ -78,4 +77,11 @@ public class PistonSubsystem extends SubsystemEG {
         }
     }
 
+    @Override
+    public List<LoggableData> getLoggableData() {
+        return List.of(new LoggableData[]
+        {
+            new LoggableString(getName() + " - State", () -> m_piston.get().toString())
+        });
+    }
 }

@@ -2,10 +2,14 @@ package frc.everlib.subsystems.motors.commands;
 
 
 
+import java.util.List;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
+import frc.everlib.utils.loggables.LoggableBoolean;
+import frc.everlib.utils.loggables.LoggableData;
+import frc.everlib.utils.loggables.LoggableDouble;
+import edu.wpi.first.wpilibj.command.Command;
 
 
 
@@ -28,27 +32,59 @@ public class MotorSystemBangBang extends MoveMotorSystem {
   /**
   * The constructor for this class, which sets its speed and target. 
   * @param subsystem - The subsystem to be moved to target.
-  * @param speedModifier - The speed modifier of the subsystem as it moves forward to target. If the movemennt
+  * @param motorSpeed - The speed modifier of the subsystem as it moves forward to target. If the movemennt
   * will be backwards, this modifier will be inverted.
   * @param target -Supplier of the target's ditance from the same point the distanceSupplier mesures from.
   * @param targetName - The name of the target to move the subsystem to, to be used for this command's switch../
   */
   public MotorSystemBangBang(
     MotorSubsystem subsystem,
-    Supplier<Double> speedModifier, 
+    Supplier<Double> motorSpeed, 
     Supplier<Double> target,
-    String targetName) {
-        super(subsystem.getName() + " - Move to " + targetName, subsystem, speedModifier);
+    String targetName,
+    boolean log) {
+        super(subsystem.getName() + " - Move to " + targetName, subsystem, motorSpeed);
         
         m_target = target;
         m_startedInFront = IN_FRONT_SUPPLIER.get();
 
         if (m_startedInFront) m_speedModifier = () -> -1.0; //If the subsystem should move backwards, invert the speed
   }
+
+  /**
+  * The constructor for this class, which sets its speed and target. 
+  * @param subsystem - The subsystem to be moved to target.
+  * @param motorSpeed - The speed modifier of the subsystem as it moves forward to target. If the movemennt
+  * will be backwards, this modifier will be inverted.
+  * @param target -Supplier of the target's ditance from the same point the distanceSupplier mesures from.
+  * @param targetName - The name of the target to move the subsystem to, to be used for this command's switch../
+  */
+  public MotorSystemBangBang(
+    MotorSubsystem subsystem,
+    Supplier<Double> motorSpeed, 
+    Supplier<Double> target,
+    String targetName) {
+      this(subsystem, motorSpeed, target, targetName, false);
+  }
  
   /**If the subsystem passed the target, finish*/
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return m_startedInFront != IN_FRONT_SUPPLIER.get() || super.isFinished();
+  }
+
+
+
+  @Override
+  public List<LoggableData> getLoggableData() {
+    List<LoggableData> loggables = super.getLoggableData();
+    
+    loggables.addAll(List.of(
+      new LoggableDouble(getName() + " - Target", m_target),
+      new LoggableDouble(getName() + " - distance from target", () -> m_target.get() - m_subsystem.getDistance()),
+      new LoggableBoolean(getName() + " - In Front of Target", IN_FRONT_SUPPLIER)
+    ));
+    
+    return loggables;
   }
 }

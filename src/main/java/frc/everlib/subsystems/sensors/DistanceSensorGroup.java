@@ -1,11 +1,17 @@
 package frc.everlib.subsystems.sensors;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import frc.everlib.utils.loggables.LoggableData;
+import frc.everlib.utils.loggables.LoggableDouble;
+import frc.everlib.utils.loggables.LoggableObject;
+
 
 /**
  * SensorGroup
  */
-public class DistanceSensorGroup extends DistanceSensor {
+public class DistanceSensorGroup extends DistanceSensor implements LoggableObject {
     List<DistanceSensor> m_sesnsors;
     int sum;
 
@@ -29,5 +35,23 @@ public class DistanceSensorGroup extends DistanceSensor {
         }
 
         return sum / m_sesnsors.size();
+    }
+
+
+    @Override
+    public String getName() {
+        return getSubsystem() + " - Distance sensor";
+    }
+
+    @Override
+    public List<LoggableData> getLoggableData() {
+        List<LoggableData> loggables = new ArrayList<>();
+
+        for (DistanceSensor sensor : m_sesnsors) { 
+            loggables.add(new LoggableDouble(getSubsystem() + " - sensors - " + sensor.toString(),
+            sensor::getDistance));
+        }
+
+        return loggables;
     }
 }

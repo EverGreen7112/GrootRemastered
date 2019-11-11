@@ -2,10 +2,12 @@ package frc.everlib.subsystems.motors.subsystems;
 
 import java.util.Map;
 
+import frc.everlib.oi.joysticks.JoystickEG;
+import frc.everlib.subsystems.motors.commands.TankDrive;
 import frc.everlib.subsystems.sensors.DistanceSensor;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
+
 
 /**
  * DriveTank
@@ -28,9 +30,12 @@ public class DriveTank extends MotorSubsystem {
         set(Map.of(0, leftSpeed, 1, rightSpeed));
     }
 
-    public void setDefaultByJoystick(Joystick joystick, AxisType leftAxis, AxisType rightAxis) {
-
+    public void setDefaultByJoystick(JoystickEG joystick, AxisType leftAxis, AxisType rightAxis) {
+        setDefaultCommand(
+            new TankDrive(
+                getName() + " default command (drive tank by joystick)", 
+                this,
+                () -> joystick.getRawAxis(leftAxis),
+                () -> joystick.getRawAxis(rightAxis)));
     }
-
-
 }

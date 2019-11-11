@@ -1,13 +1,15 @@
 package frc.everlib.utils.ranges;
 
-import java.util.function.Predicate;
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 /**
- * A functional interface used to limit movement or speed to a specific range. <p>
- *
- * It can be initialized directly like {@link Predicate Predicate<Double>}, or with
- * a subclass - {@link MinLimit}, {@link MaxLimit} or {@link DoubleLimit}
+ * Add your docs here.
  */
-public interface Range  {
+public interface Range {
     public boolean inRange(double value);
 }

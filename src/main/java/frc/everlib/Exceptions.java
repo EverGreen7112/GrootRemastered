@@ -77,6 +77,7 @@ public interface Exceptions {
         {
             super(message, error);
         }
+
     }
 
     public class SensorDoesNotExistException extends NullPointerException
