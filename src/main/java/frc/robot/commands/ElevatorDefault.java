@@ -27,23 +27,23 @@ public class ElevatorDefault extends CommandEG implements SubsystemConstants.Ele
     CommandEG speedLock = new MoveMotorSystem("Elevator Stall", Groot.elevator, () -> lastSpeed);
 
     @Override
-    protected void initialize() {
-        baseDefault.start();
+    public void initialize() {
+        baseDefault.schedule();
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         
         if (speedLockSwitch.get() && !speedLocked)
         {
             speedLocked = true;
-            speedLock.start();
+            speedLock.schedule();
         }
 
         else if (!speedLockSwitch.get() && speedLocked)
         {
             speedLocked = false;
-            baseDefault.start();
+            baseDefault.schedule();
         }
 
         else if (!speedLocked)

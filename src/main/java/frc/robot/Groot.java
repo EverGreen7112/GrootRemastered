@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.everlib.shuffleboard.handlers.DashboardStreams;
 import frc.everlib.subsystems.motors.commands.TankDrive;
 import frc.everlib.subsystems.motors.subsystems.DriveTank;
 import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
@@ -51,13 +52,33 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
   public static final NetworkTable imageProccesing = 
     NetworkTableInstance.getDefault().getTable("ImageProcessing");
 
+  
+  public interface ToLog {
+    boolean //TODO turn into CommandList interface
+      l_bottomCargoMove = false,
+      l_bottomHatchMove = false,
+      l_fastDrive = false,
+      l_flipGripper = false,
+      l_gripperCatch = false,
+      l_gripperRelease = false,
+      l_middleCargoMove = false,
+      l_middleHatchMove = false,
+      l_slowDrive = false,
+      l_smartP = false,
+      l_speedLock = false,
+      l_takeHatch = false,
+      l_throwHatch = false,
+      l_topCargoMove = false,
+      l_topHatchMove = false;
+  }
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-
+    //-------------Default Commands
     elevator.setDefaultCommand(new ElevatorDefault());
     
     chassis.setDefaultCommand(new TankDrive(
@@ -77,13 +98,14 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void robotPeriodic() {
-    gripperMovement.setForward(); //Folded
-    hatchGripper.setForward(); //In
-    hatchHolder.setForward(); //Out
+    DashboardStreams.update();
   }
 
   @Override
   public void autonomousInit() {
+    gripperMovement.setForward(); //Folded
+    hatchGripper.setForward(); //In
+    hatchHolder.setForward(); //Out
   }
 
   /**
@@ -91,6 +113,9 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void autonomousPeriodic() {
+    gripperMovement.setForward(); //Folded
+    hatchGripper.setForward(); //In
+    hatchHolder.setForward(); //Out
 
   }
 

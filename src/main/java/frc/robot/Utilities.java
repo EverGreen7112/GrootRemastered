@@ -2,10 +2,10 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.buttons.Button;
 import frc.everlib.shuffleboard.handlers.Switch;
 import frc.everlib.shuffleboard.handlers.SwitchHandler;
 import frc.everlib.subsystems.motors.commands.TankDrive;
+import frc.wpilib2020.framework.button.Button;
 
 /**
  * Utilities
@@ -35,7 +35,6 @@ public class Utilities implements SubsystemConstants {
 
 
          //Function from the form ax^2 + bx + c, but b = 0
-
         double a = ChassisConstants.smartPMaxFix.get() - ChassisConstants.maxStaticFriction.get()
             / Math.pow(320, 2);
 
@@ -47,15 +46,18 @@ public class Utilities implements SubsystemConstants {
     }
 
 
-    public static void setHeldChassisDrive(String label, Button button, Supplier<Double> modifier) {
-        setHeldChassisDrive(label, button, () -> 0.0, modifier);
+    public static void setHeldChassisDrive(String label, Button button, 
+    Supplier<Double> modifier, boolean log) {
+        setHeldChassisDrive(label, button, () -> 0.0, modifier, log);
     }
 
     public static void setHeldChassisDrive(String label, Button button, Supplier<Double> leftAdjust,
-         Supplier<Double> modifier) {
+         Supplier<Double> modifier, boolean log) {
         button.whileHeld(new TankDrive(
             "Chassis - " + label, Groot.chassis, 
-            () -> OI.rightChassisJoystick.getY() + leftAdjust.get(), () -> OI.leftChassisJoystick.getY(),
-            modifier));
+            () -> OI.leftChassisJoystick.getY() + leftAdjust.get(), 
+            () -> OI.rightChassisJoystick.getY(),
+            modifier, 
+            log));
     }
 }
