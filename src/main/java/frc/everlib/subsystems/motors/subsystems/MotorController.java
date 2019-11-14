@@ -29,7 +29,7 @@ public class MotorController implements SpeedController {
     /**
      * The wrapped {@link SpeedController} object.
      */
-    private SpeedController m_obj;
+    private final SpeedController m_obj;
 
     /**A {@link HashMap} which lists all motors this controller controls - their port
      * and the type pf their hardware controller
@@ -58,12 +58,11 @@ public class MotorController implements SpeedController {
         //Wrapped object as their SpeedControllerGroup.
 
         //The speed controllers to construct the Group with.
-        motors = new SpeedController[ports.length];
+        motors = new SpeedController[ports.length - 1];
         firstMotor = type.m_init.generate(ports[0]);
         
         //intializing them.
-        for(int i = 1; i < ports.length; i++)
-        {
+        for(int i = 1; i < ports.length; i++) {
             finalController = type.initlize(ports[i]);
             m_motors.add(finalController);
             motors[i-1] = finalController; 
@@ -75,7 +74,7 @@ public class MotorController implements SpeedController {
     }
 
     /**
-     * Consrtucts a {@link MotorController} which combines multiple other MotorControllers.
+     * Consrtucts an {@link MotorController} which combines multiple other MotorControllers.
      * Also works as a copy constructor. <p>
      * 
      * The new Controller's methods will aplly on all the given controllers.
@@ -142,7 +141,6 @@ public class MotorController implements SpeedController {
     public void stopMotor() {
         m_obj.stopMotor();
     }
-
     /**A controller model - Victor SPX, Talon SRX, ect. */
     public enum ControllerType
     {
@@ -151,14 +149,18 @@ public class MotorController implements SpeedController {
         JAGUAR(Jaguar::new),
         SPARK(Spark::new);
 
-        MotorInitializer m_init;
+        private MotorInitializer m_init;
 
-        SpeedController initlize(int channel) {
+        public SpeedController initlize(int channel) {
             return m_init.generate(channel);
         }
 
-        ControllerType(MotorInitializer init) {
+        private ControllerType(MotorInitializer init) {
             m_init = init;
         }
+    }
+
+    public SpeedController getObj() {
+        return m_obj;
     }
 }
