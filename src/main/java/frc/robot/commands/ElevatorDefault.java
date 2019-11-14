@@ -15,6 +15,7 @@ public class ElevatorDefault extends CommandEG implements SubsystemConstants.Ele
 
     public ElevatorDefault() {
         super("Elevator default command");
+        addRequirements(Groot.elevator);
     }
     
     public final static Switch speedLockSwitch = SwitchHandler.addSwitch("Elevator Stall");
