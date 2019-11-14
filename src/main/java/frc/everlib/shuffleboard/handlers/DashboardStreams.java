@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import frc.everlib.subsystems.SubsystemEG;
 import frc.everlib.utils.loggables.LoggableData;
 import frc.everlib.utils.loggables.LoggableObject;
 import frc.wpilib2020.deps.SmartDashboard;
@@ -26,6 +27,7 @@ public class DashboardStreams {
         if (!SmartDashboard.containsKey(key)) {
             SmartDashboard.putString(key, valueSupplier.get());
             m_stringMap.put(key, valueSupplier);
+            System.out.println("Added String stream \"" + key + "\" to the shuffleboard");
         }
 
         else {
@@ -39,6 +41,7 @@ public class DashboardStreams {
         if (!SmartDashboard.containsKey(key)) {
             SmartDashboard.putNumber(key, valueSupplier.get());
             m_intMap.put(key, valueSupplier);
+            System.out.println("Added Integer stream \"" + key + "\" to the shuffleboard");
         }
 
         else {
@@ -52,6 +55,7 @@ public class DashboardStreams {
         if (!SmartDashboard.containsKey(key)) {
             SmartDashboard.putNumber(key, valueSupplier.get());
             m_doubleMap.put(key, valueSupplier);
+            System.out.println("Added Double stream \"" + key + "\" to the shuffleboard");            
         }
 
         else {
@@ -65,6 +69,7 @@ public class DashboardStreams {
         if (!SmartDashboard.containsKey(key)) {
             SmartDashboard.putBoolean(key, valueSupplier.get());
             m_boolMap.put(key, valueSupplier);
+            System.out.println("Added Boolean stream \"" + key + "\" to the shuffleboard");
         }
 
         else {
@@ -79,6 +84,8 @@ public class DashboardStreams {
             for (LoggableData loggableData : loggable.getLoggableData()) 
             {
                 String key = loggableData.getKey();
+
+                System.out.println("Adding data streams for loggable Object  \"" + key + "\"...");
 
                 if (!SmartDashboard.containsKey(key)) {
                     loggableData.addToDashboard();
