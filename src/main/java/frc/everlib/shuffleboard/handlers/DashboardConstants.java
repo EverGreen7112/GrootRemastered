@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Preferences;
+import frc.everlib.subsystems.SubsystemEG;
 
 /**
  * DashboardConstants
@@ -19,55 +20,32 @@ public class DashboardConstants {
     {
         Preferences.getInstance().putDouble(name, value);
             
-        System.out.println(String.format("Added {0} double constant: {1}", name, value));
+        System.out.println("Added \"" + name +"\" double constant: " + value);
 
         return () -> Preferences.getInstance().getDouble(name, 0);
     }
 
+
     public static Supplier<Integer> addInt(String name, int value, boolean printVerbose)
     {
         Preferences.getInstance().putInt(name, value);
-
-        if(printVerbose)
-        {
-            System.out.println(String.format("Added {0} integer constant: {1}", name, value));
-        }
-
+        System.out.println("Added \"" + name + "\" integer constant:" + value);
         return () -> Preferences.getInstance().getInt(name, 0);
     }
 
 
-    public static Supplier<String> addString(String name, String value, boolean printVerbose)
+    public static Supplier<String> addString(String name, String value)
     {
         Preferences.getInstance().putString(name, value);
-
-        if(printVerbose)
-        {
-            System.out.println(String.format("Added {0} string constant: {1}", name, value));
-        }
-
+        System.out.println("Added \"" + name + "\" string constant: " + value);
         return () -> Preferences.getInstance().getString(name, "Value not found");
     }
 
 
-    public static Supplier<Boolean> addBoolean(String name, boolean value, boolean printVerbose)
-    {
-        Preferences.getInstance().putBoolean(name, value);
-
-        if(printVerbose)
-        {
-            System.out.println(String.format("Added {0} boolean constant: {1}", name, value));
-        }
-
-        return () -> Preferences.getInstance().getBoolean(name, false);
-    }
-
-    
     public static Supplier<Boolean> addBoolean(String name, boolean value)
     {
-        if (!Preferences.getInstance().containsKey(name))
-            Preferences.getInstance().putBoolean(name, value);
-
+        Preferences.getInstance().putBoolean(name, value);
+        System.out.println("Added \"" + name + "\" boolean constant: " + value);
         return () -> Preferences.getInstance().getBoolean(name, false);
     }
 
