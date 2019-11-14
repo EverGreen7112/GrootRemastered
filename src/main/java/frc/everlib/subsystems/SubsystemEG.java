@@ -53,7 +53,8 @@ public abstract class SubsystemEG extends SubsystemBase implements Exceptions, L
         } 
 
         catch (NullPointerException e) {
-            throw new SensorDoesNotExistException(getName() + " does not have a distance sensor!");
+            return 0; //throw new SensorDoesNotExistException(getName() + " does not have a distance sensor!");
+            //TODO find issue
         }
     }
 
