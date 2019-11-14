@@ -79,7 +79,6 @@ public class DashboardStreams {
     }
 
     public static void addLoggable(LoggableObject... loggables) {
-
         for (LoggableObject loggable : loggables) {
             for (LoggableData loggableData : loggable.getLoggableData()) 
             {

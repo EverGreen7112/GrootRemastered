@@ -99,7 +99,6 @@ public class MotorSubsystem extends SubsystemEG implements PIDOutput {
     public List<LoggableData> getLoggableData() {
         List<LoggableData> loggables = super.getLoggableData();
 
-
         for (int i = 0; i < m_controllers.length; i++) {
             loggables.add(new LoggableDouble(
                 getName() + " - Controller #" + i + " speed", m_controllers[i]::get));            
