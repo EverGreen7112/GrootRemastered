@@ -62,7 +62,7 @@ public abstract class SubsystemEG extends SubsystemBase implements Exceptions, L
     public List<LoggableData> getLoggableData() {
         List<LoggableData> loggables = new ArrayList<>();
         
-        if (m_distanceSensor.getClass() == DistanceSensorGroup.class) {
+        if (m_distanceSensor instanceof DistanceSensorGroup) {
             DistanceSensorGroup sensorGroup = (DistanceSensorGroup)m_distanceSensor;
             loggables.addAll(sensorGroup.getLoggableData());
         }

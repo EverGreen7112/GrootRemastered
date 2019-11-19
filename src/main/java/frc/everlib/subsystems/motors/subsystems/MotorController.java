@@ -145,9 +145,7 @@ public class MotorController implements SpeedController {
     public enum ControllerType
     {
         VICTOR_SPX(WPI_VictorSPX::new),
-        TALON_SRX(WPI_TalonSRX::new),
-        JAGUAR(Jaguar::new),
-        SPARK(Spark::new);
+        TALON_SRX(WPI_TalonSRX::new);
 
         private MotorInitializer m_init;
 

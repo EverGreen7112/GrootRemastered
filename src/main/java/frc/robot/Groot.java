@@ -9,11 +9,16 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.everlib.shuffleboard.handlers.DashboardStreams;
 import frc.everlib.subsystems.motors.commands.TankDrive;
 import frc.everlib.subsystems.motors.subsystems.DriveTank;
+import frc.everlib.subsystems.motors.subsystems.MotorController;
 import frc.everlib.subsystems.motors.subsystems.MotorSubsystem;
+import frc.everlib.subsystems.motors.subsystems.MotorController.ControllerType;
 import frc.everlib.subsystems.pistons.subsystems.PistonSubsystem;
 import frc.everlib.utils.ranges.MinLimit;
 import frc.robot.commands.ElevatorDefault;
@@ -79,13 +84,27 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
   @Override
   public void robotInit() {
     //-------------Default Commands
-    elevator.setDefaultCommand(new ElevatorDefault());
+    // elevator.setDefaultCommand(new ElevatorDefault());
     
-    chassis.setDefaultCommand(new TankDrive(
-      "Chassis default (drive eith joystick)", 
-      chassis,
-      OI.leftChassisJoystick::getY, 
-      OI.rightChassisJoystick::getY));
+    // chassis.setDefaultCommand(new TankDrive(
+    //   "Chassis default (drive eith joystick)", 
+    //   chassis,
+    //   OI.leftChassisJoystick::getY, 
+    //   OI.rightChassisJoystick::getY));
+
+    // cargoGripper.move(0.7);
+    
+    gripperMovement.toggle();
+
+    DashboardStreams.addLoggable(cargoGripper);
+    DashboardStreams.addDouble("DrivingLeft", OI.leftChassisJoystick::getY);
+    DashboardStreams.addDouble("DrivingRight", OI.rightChassisJoystick::getY);
+    DashboardStreams.addDouble("ButtonJS", OI.buttonJoystick::getY);
+  }
+
+  @Override
+  public void disabledInit() {
+    super.disabledInit();
   }
 
   /**
@@ -103,9 +122,9 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
 
   @Override
   public void autonomousInit() {
-    gripperMovement.setForward(); //Folded
-    hatchGripper.setForward(); //In
-    hatchHolder.setForward(); //Out
+    // gripperMovement.setForward(); //Folded
+    // hatchGripper.setForward(); //In
+    // hatchHolder.setForward(); //Out
   }
 
   /**
@@ -113,9 +132,9 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void autonomousPeriodic() {
-    gripperMovement.setForward(); //Folded
-    hatchGripper.setForward(); //In
-    hatchHolder.setForward(); //Out
+    // gripperMovement.setForward(); //Folded
+    // hatchGripper.setForward(); //In
+    // hatchHolder.setForward(); //Out
 
   }
 

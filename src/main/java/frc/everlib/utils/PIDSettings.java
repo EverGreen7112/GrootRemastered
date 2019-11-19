@@ -49,10 +49,10 @@ public class PIDSettings {
     public PIDSettings(MotorSubsystem subsystem, double kP, double kI, double kD, 
         double tolerance, double kF, double period) {
 
-        m_P = DashboardConstants.addDouble(subsystem.getName() + " PID - kP (Value Supplier)", kP);
-        m_I = DashboardConstants.addDouble(subsystem.getName() + " PID - kI (Value Supplier)", kI);
-        m_D = DashboardConstants.addDouble(subsystem.getName() + " PID - kD (Value Supplier)", kD);
-        m_F = DashboardConstants.addDouble(subsystem.getName() + " PID - kF (Value Supplier)", kF);
+        m_P = DashboardConstants.addDouble(subsystem.getName() + " Constants - PID - kP (Value Supplier)", kP);
+        m_I = DashboardConstants.addDouble(subsystem.getName() + " Constants - PID - kI (Value Supplier)", kI);
+        m_D = DashboardConstants.addDouble(subsystem.getName() + " Constants - PID - kD (Value Supplier)", kD);
+        m_F = DashboardConstants.addDouble(subsystem.getName() + " Constants - PID - kF (Value Supplier)", kF);
         
         m_tolerance = DashboardConstants.addDouble(
             subsystem.getName() + " PID - Tolerance", tolerance);

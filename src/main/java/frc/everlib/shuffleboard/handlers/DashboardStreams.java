@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import frc.everlib.subsystems.SubsystemEG;
 import frc.everlib.utils.loggables.LoggableData;
 import frc.everlib.utils.loggables.LoggableObject;
 import frc.wpilib2020.deps.SmartDashboard;
@@ -80,8 +79,7 @@ public class DashboardStreams {
 
     public static void addLoggable(LoggableObject... loggables) {
         for (LoggableObject loggable : loggables) {
-            for (LoggableData loggableData : loggable.getLoggableData()) 
-            {
+            for (LoggableData loggableData : loggable.getLoggableData()) {
                 String key = loggableData.getKey();
 
                 System.out.println("Adding data streams for loggable Object  \"" + key + "\"...");
@@ -98,7 +96,6 @@ public class DashboardStreams {
                 }
             }   
         }
-        
     }
 
 
