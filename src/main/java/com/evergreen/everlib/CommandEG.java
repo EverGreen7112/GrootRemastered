@@ -33,7 +33,7 @@ public abstract class CommandEG extends CommandBase implements LoggableObject {
      */
     public CommandEG(String name) {
         setName(name);
-        m_commandSwitch = SwitchHandler.addSwitch(name);
+        m_commandSwitch = SwitchHandler.addSwitch("Command Switches/" + name);
     }
 
     /**
@@ -45,8 +45,7 @@ public abstract class CommandEG extends CommandBase implements LoggableObject {
      * @param log - wether to log the command on the shuffleboard or not.
      */
     public CommandEG(String name, boolean log) {
-        setName(name);
-        m_commandSwitch = SwitchHandler.addSwitch(name + " - Command Switch");
+        this(name);
         if (log) DashboardStreams.addLoggable(this);
     }
 
@@ -152,7 +151,7 @@ public abstract class CommandEG extends CommandBase implements LoggableObject {
     @Override
     public List<LoggableData> getLoggableData() {
         return List.of(new LoggableData[] {
-            new LoggableInt(getName() + "Ran Counter", () -> m_ranCounter)
+            new LoggableInt(getName() + " - Ran Counter", () -> m_ranCounter)
         });
     }
 

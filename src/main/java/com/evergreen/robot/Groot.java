@@ -11,11 +11,16 @@ import com.evergreen.everlib.shuffleboard.handlers.DashboardStreams;
 import com.evergreen.everlib.subsystems.motors.subsystems.DriveTank;
 import com.evergreen.everlib.subsystems.motors.subsystems.MotorSubsystem;
 import com.evergreen.everlib.subsystems.pistons.subsystems.PistonSubsystem;
-import com.evergreen.everlib.utils.ranges.MinLimit;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import com.evergreen.everlib.shuffleboard.handlers.DashboardStreams;
+import com.evergreen.everlib.subsystems.motors.commands.MoveMotorSystem;
+import com.evergreen.everlib.subsystems.motors.subsystems.DriveTank;
+import com.evergreen.everlib.subsystems.motors.subsystems.DriveTank.Side;
+import com.evergreen.everlib.subsystems.motors.subsystems.MotorSubsystem;
+import com.evergreen.everlib.subsystems.pistons.subsystems.PistonSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,15 +30,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Groot extends TimedRobot implements SubsystemComponents, SubsystemConstants {
-  
+
   public static final MotorSubsystem elevator = new MotorSubsystem(
       "Elevator", ElevatorComponents.distanceSensor, ElevatorComponents.motors);
     
   public static final MotorSubsystem cargoGripper = new MotorSubsystem(
-      "Cargo Gripper", CargoGripperComponents.distanceSensor, 
-      new MinLimit(GripperConstants.cargoDistance), 
-      CargoGripperComponents.motors);
-
+      "Cargo Gripper", CargoGripperComponents.motors);
 
   public static final PistonSubsystem gripperMovement = new PistonSubsystem(
     GripperMovementComponents.pistons, "Gripper Movement");
@@ -43,7 +45,6 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
   
   public static final PistonSubsystem hatchHolder = new PistonSubsystem(
     GripperPanelComponents.toungePistons, "Panel Holder");
-
 
   public static final DriveTank 
     chassis = new DriveTank("Chassis", ChassisComponents.leftMotors, ChassisComponents.rightMotor);
@@ -77,23 +78,20 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void robotInit() {
-    //-------------Default Commands
+    //-------------Configurations-------------
+    chassis.setInverted(Side.RIGHT);
+    chassis.setRightModifier(0.8);
+
+    //-------------Default Commands-------------
     // elevator.setDefaultCommand(new ElevatorDefault());
-    
     // chassis.setDefaultCommand(new TankDrive(
     //   "Chassis default (drive eith joystick)", 
     //   chassis,
     //   OI.leftChassisJoystick::getY, 
     //   OI.rightChassisJoystick::getY));
 
-    // cargoGripper.move(0.7);
-    
-    gripperMovement.toggle();
-
-    DashboardStreams.addLoggable(cargoGripper);
-    DashboardStreams.addDouble("DrivingLeft", OI.leftChassisJoystick::getY);
-    DashboardStreams.addDouble("DrivingRight", OI.rightChassisJoystick::getY);
-    DashboardStreams.addDouble("ButtonJS", OI.buttonJoystick::getY);
+    //-------------Dashboard Debug-------------
+    DashboardStreams.addBoolean("Debug/Elevator Can Move", elevator::canMove);
   }
 
   @Override
@@ -137,6 +135,15 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void teleopPeriodic() {
+  }
+
+  @Override
+  public void teleopInit() {
+    cargoGripper.move(0.3);
+    // elevator.move(-0.3);
+    // chassis.move(0.5);
+    // chassis.move(0.5);  
+    // new MoveMotorSystem("testy", chassis, () -> -0.5).schedule();
   }
 
   /**

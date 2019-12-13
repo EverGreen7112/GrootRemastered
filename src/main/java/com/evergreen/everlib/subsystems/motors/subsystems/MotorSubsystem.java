@@ -18,45 +18,40 @@ public class MotorSubsystem extends SubsystemEG {
     protected MotorController[] m_controllers;
 
     /**The range in which the subsystem is allowed to move. */
-    protected Range m_Range;
+    public Range m_Range; //TODO protected
 
-    /**The sensor mesuring the distance the subsystem has gone. */
-    protected DistanceSensor m_distanceSensor;
-    
+    public static DistanceSensor DEFAULT_SENSOR = null;
+    public static Range DEFAULT_RANGE = Range.TRUE;
+    public static Command DEFAULT_DEFAULT_COMMAND = null;
+
+    public MotorSubsystem(String name, DistanceSensor distanceSensor, Range range, 
+        Command defaultCommand, MotorController... motors)
+    {
+        super(name, defaultCommand,distanceSensor);
+        m_controllers = motors;
+        m_Range = range;
+    }
+
     public MotorSubsystem(String name, MotorController... motors)
     {
-        super(name);    
-        m_controllers = motors;
-        m_Range = (v) -> true;
+        this(name, DEFAULT_SENSOR, DEFAULT_RANGE, DEFAULT_DEFAULT_COMMAND, motors);
     }
 
     public MotorSubsystem(String name, DistanceSensor distanceSensor, MotorController... motors) {
-        super(name);
-        m_controllers = motors;
-        m_distanceSensor = distanceSensor;
+        this(name, distanceSensor, DEFAULT_RANGE, DEFAULT_DEFAULT_COMMAND, motors);
     }
 
-    public MotorSubsystem(String name, DistanceSensor sensor, Range Range, MotorController... motors)
+    public MotorSubsystem(String name, DistanceSensor distanceSensor, Range range, MotorController... motors)
     {
-        super(name);
-        m_controllers = motors;
-        m_distanceSensor = sensor;
-        m_Range = Range;
-    }
-
-    public MotorSubsystem(String name, DistanceSensor distanceSensor, Range Range, 
-        Command defaultCommand, MotorController... motors)
-    {
-        super(name, defaultCommand);
-        m_controllers = motors;
-        m_distanceSensor = distanceSensor;
-        m_Range = Range;
+        this(name, distanceSensor, range, DEFAULT_DEFAULT_COMMAND, motors);
     }
 
 
     public void move(double speed) {
-        for (MotorController control : m_controllers) {
-            control.set(speed);
+        if (canMove()) {
+            for (MotorController control : m_controllers) {
+                control.set(speed);
+            }
         }
     }
 
@@ -81,16 +76,14 @@ public class MotorSubsystem extends SubsystemEG {
 
     }
 
-    public DistanceSensor getSensor() {
-        return m_distanceSensor;
-    }
-
     public MotorController[] getMotorControllers() {
         return m_controllers;
     }
 
     public boolean canMove() {
-        return m_Range.inRange(getDistance()) && m_subsystemSwitch.get();
+        return m_subsystemSwitch.get() && 
+        (getSensor() == null ||
+        m_Range.inRange(getDistance()));
     }
 
     @Override

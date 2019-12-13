@@ -25,18 +25,23 @@ public abstract class SubsystemEG extends SubsystemBase implements Exceptions, L
 
     public SubsystemEG(String name) {
         setName(name);
-        m_subsystemSwitch  = SwitchHandler.addSwitch(name);
+        m_subsystemSwitch  = SwitchHandler.addSwitch("Subsystem Switches/" + name);
     }
 
     public SubsystemEG(String name, Command defaultCommand) {
         this(name);
-        setDefaultCommand(defaultCommand);
+        if (defaultCommand != null) setDefaultCommand(defaultCommand);
+    }
+
+    public SubsystemEG(String name, DistanceSensor distanceSesnsor) {
+        this(name);
+        m_distanceSensor = distanceSesnsor;
     }
 
     public SubsystemEG(String name, Command defaultCommand, DistanceSensor distanceSesnsor) {
         this(name, defaultCommand);
         m_distanceSensor = distanceSesnsor;
-        m_distanceSensor.setSubsystem(this);
+        // m_distanceSensor.setSubsystem(this);
     }
 
     public Switch getSwitch() {
@@ -70,6 +75,10 @@ public abstract class SubsystemEG extends SubsystemBase implements Exceptions, L
         loggables.add(new LoggableDouble(getName() + " - distance", () -> getDistance()));
 
         return loggables;
+    }
+    
+    public DistanceSensor getSensor() {
+        return m_distanceSensor;
     }
 
 }

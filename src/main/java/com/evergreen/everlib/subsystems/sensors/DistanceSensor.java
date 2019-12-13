@@ -39,7 +39,7 @@ public abstract class DistanceSensor {
         m_offset = offset;
     }
 
-    protected abstract double _getDistance();
+    public abstract double _getDistance(); //TODO protected
     
     public final double getDistance() 
     {
@@ -50,7 +50,6 @@ public abstract class DistanceSensor {
         }
 
         return distance;
-
     }    
 
     public boolean inRange(double minDistance, double maxDistance)

@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Preferences;
+import com.evergreen.everlib.subsystems.SubsystemEG;
+import com.wpilib2020.framework.SubsystemBase;
 
 /**
  * DashboardConstants
@@ -15,11 +17,15 @@ public class DashboardConstants {
     private static Map<String, Double> doubles = new HashMap<>();
     private static Map<String, Integer> integers = new HashMap<>();
 
+    static {
+        clean();
+    }
+
     public static Supplier<Double> addDouble(String name, Double value)
     {
         Preferences.getInstance().putDouble(name, value);
             
-        System.out.println(String.format("Added {0} double constant: {1}", name, value));
+        System.out.println(String.format("Added %s double constant: %n", name, value));
 
         return () -> Preferences.getInstance().getDouble(name, 0);
     }
@@ -30,7 +36,7 @@ public class DashboardConstants {
 
         if(printVerbose)
         {
-            System.out.println(String.format("Added {0} integer constant: {1}", name, value));
+            System.out.println(String.format("Added %s integer constant: %n", name, value));
         }
 
         return () -> Preferences.getInstance().getInt(name, 0);
@@ -43,7 +49,7 @@ public class DashboardConstants {
 
         if(printVerbose)
         {
-            System.out.println(String.format("Added {0} string constant: {1}", name, value));
+            System.out.println(String.format("Added %s string constant: %s", name, value));
         }
 
         return () -> Preferences.getInstance().getString(name, "Value not found");
@@ -56,7 +62,7 @@ public class DashboardConstants {
 
         if(printVerbose)
         {
-            System.out.println(String.format("Added {0} boolean constant: {1}", name, value));
+            System.out.println(String.format("Added %s boolean constant: %s", name, value));
         }
 
         return () -> Preferences.getInstance().getBoolean(name, false);
@@ -79,6 +85,32 @@ public class DashboardConstants {
         doubles.remove(key);
         booleans.remove(key);
         Preferences.getInstance().remove(key);
+    }
+
+    public static void reset() {
+
+        for (String key : strings.keySet()) {
+            Preferences.getInstance().putString(key, strings.get(key));
+        }
+
+        for (String key : doubles.keySet()) {
+            Preferences.getInstance().putDouble(key, doubles.get(key));
+        }
+
+        for (String key : integers.keySet()) {
+            Preferences.getInstance().putInt(key, integers.get(key));
+        }
+
+        for (String key : booleans.keySet()) {
+            Preferences.getInstance().putBoolean(key, booleans.get(key));
+        }
+    }
+
+    public static void clean() {
+        for (String entry : Preferences.getInstance().getKeys()) {
+          Preferences.getInstance().remove(entry);
+          System.out.println("entry " + entry + " deleted");
+        }
     }
 
 
