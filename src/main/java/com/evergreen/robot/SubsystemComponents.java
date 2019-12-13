@@ -48,7 +48,8 @@ public interface SubsystemComponents extends RobotMap{
                 ControllerType.VICTOR_SPX, MotorPorts.chassisBackLeft, MotorPorts.chassisFrontLeft),
             
             rightMotor = new MotorController (
-                ControllerType.TALON_SRX, MotorPorts.chassisBackRight, MotorPorts.chassisFrontRight);
+                ControllerType.TALON_SRX, MotorPorts.chassisBackRight, 
+                MotorPorts.chassisFrontRight);
     }
 
     public interface CargoGripperComponents {

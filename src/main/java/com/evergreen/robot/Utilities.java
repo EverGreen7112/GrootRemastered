@@ -24,7 +24,6 @@ public class Utilities implements SubsystemConstants {
          double error;
          if (Groot.imageProccesing.getEntry("isUpdate0").getBoolean(false)
             && Groot.imageProccesing.getEntry("isUpdated1").getBoolean(false)) {
-
                 double center = Groot.imageProccesing.getEntry("x0").getDouble(0)
                             + Groot.imageProccesing.getEntry("x1").getDouble(0)
                             / 2;
