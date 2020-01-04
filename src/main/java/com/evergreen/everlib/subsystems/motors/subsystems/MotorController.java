@@ -2,7 +2,6 @@ package com.evergreen.everlib.subsystems.motors.subsystems;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -76,38 +75,7 @@ public class MotorController implements SpeedController {
     }
 
     /**
-     * Constructs a new {@link MotorController} which controlls one of more motors with the same 
-     * type of electronic controller.
-     * 
-     * @param type - The {@link ControllerType} type of the electronic speed controllers that 
-     * produce the voltage for the motors. (Victor, Talon, ect.)
-     * 
-     * @param isInverted - whether to invert the motor or not.
-     * 
-     * @param ports - The roborio ports the voltage controllers conect to.     * 
-    */
-    public MotorController(Consumer<MotorController> config, ControllerType type, int... ports) {
-        this(type, ports);
-        config.accept(this);
-    }
-
-    /**
-     * Consrtucts an {@link MotorController} which combines multiple other MotorControllers.
-     * Also works as a copy constructor. <p>
-     * 
-     * The new Controller's methods will aplly on all the given controllers.
-     * 
-     * @param controllers - The controllers to combine.
-     * @param isInverted - Whether to invert this motor or not. 
-     */
-    public MotorController(Consumer<MotorController> config, MotorController... controllers)
-    {
-        this(controllers);
-        config.accept(this);
-    }
-
-    /**
-     * Consrtucts an {@link MotorController} which combines multiple other MotorControllers.
+     * Consrtucts a {@link MotorController} which combines multiple other MotorControllers.
      * Also works as a copy constructor. <p>
      * 
      * The new Controller's methods will aplly on all the given controllers.
@@ -137,11 +105,6 @@ public class MotorController implements SpeedController {
     }
 
     @Override
-    public void pidWrite(double output) {
-        m_obj.pidWrite(output);
-    }
-
-    @Override
     public void set(double speed) {
         m_obj.set(speed);
     }
@@ -158,10 +121,6 @@ public class MotorController implements SpeedController {
     @Override
     public void setInverted(boolean isInverted) {
         m_obj.setInverted(isInverted);
-    }
-
-    public void setInverted() {
-        m_obj.setInverted(true);
     }
 
     @Override
@@ -196,5 +155,11 @@ public class MotorController implements SpeedController {
         ControllerType(MotorInitializer init) {
             m_init = init;
         }
+    }
+
+    @Deprecated
+    @Override
+    public void pidWrite(double output) {
+        m_obj.pidWrite(output);
     }
 }

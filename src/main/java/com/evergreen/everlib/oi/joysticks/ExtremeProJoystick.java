@@ -8,8 +8,8 @@
 package com.evergreen.everlib.oi.joysticks;
 
 import com.evergreen.everlib.utils.Adjuster;
-import com.wpilib2020.framework.button.Button;
-import com.wpilib2020.framework.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * A class for <a href="https://www.logitechg.com/en-roeu/products/gamepads/extreme-3d-pro-joystick.html">

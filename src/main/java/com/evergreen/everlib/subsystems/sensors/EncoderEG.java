@@ -117,7 +117,7 @@ public class EncoderEG extends DistanceSensor {
     }
 
     @Override
-    public double _getDistance() { //TODO protected
+    protected double _getDistance() {
         return m_encoder.getDistance();
     }
 }

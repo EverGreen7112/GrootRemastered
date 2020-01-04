@@ -12,8 +12,5 @@ package com.evergreen.everlib.utils.ranges;
  */
 @FunctionalInterface
 public interface Range {
-    public static Range TRUE = (v) -> true;
-    public static Range FALSE = (v) -> false;
-    
     public boolean inRange(double value);
 }

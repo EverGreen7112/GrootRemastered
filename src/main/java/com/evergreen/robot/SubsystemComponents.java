@@ -2,6 +2,7 @@ package com.evergreen.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import com.evergreen.everlib.subsystems.motors.subsystems.MotorController;
 import com.evergreen.everlib.subsystems.motors.subsystems.MotorController.ControllerType;
 import com.evergreen.everlib.subsystems.sensors.DistanceSensorGroup;
@@ -39,7 +40,6 @@ public interface SubsystemComponents extends RobotMap{
                 ElevatorConstants.DISTANCE_PER_ENCODER_PULSE) //distacne per pulse
             
             );
-
     }
 
     public interface ChassisComponents {
@@ -48,8 +48,7 @@ public interface SubsystemComponents extends RobotMap{
                 ControllerType.VICTOR_SPX, MotorPorts.chassisBackLeft, MotorPorts.chassisFrontLeft),
             
             rightMotor = new MotorController (
-                ControllerType.TALON_SRX, MotorPorts.chassisBackRight, 
-                MotorPorts.chassisFrontRight);
+                ControllerType.TALON_SRX, MotorPorts.chassisBackRight, MotorPorts.chassisFrontRight);
     }
 
     public interface CargoGripperComponents {
