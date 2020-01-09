@@ -23,5 +23,4 @@ public class InstantCommandEG extends CommandEG {
     public boolean isFinished() {
         return true;
     }
-    
 }

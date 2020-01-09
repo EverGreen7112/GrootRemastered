@@ -17,26 +17,31 @@ import com.evergreen.everlib.utils.InstantCommandEG;
 /**A command that sets a {@link ConstantBoolean shuffleboard switch} an input value. <p>
  * This command has a shuffleboard switch (set at constucion), which, if diabled,
  * will stop this command from running.
+ * 
+ * @author Atai Ambus
 */
 public class SetSwitch extends InstantCommandEG {
 
   private String m_switchPath;
 
   /**
-   * Constructs a {@link CommandEG} which when ran, sets the input switches at input value
+   * Constructs a command that sets the input switches at input value
+   * 
    * @param name - The name of this command and its shuffleboard switch.
    * @param value - The value to set the switches
-   * @param switches - The switches to swt.
+   * @param switches - The switches to set.
    */
   public SetSwitch(String name, boolean value, ConstantBoolean booleanSwitch) {
     super(name, () -> booleanSwitch.set(value));
     m_switchPath = booleanSwitch.getPath();
   }
 
+
   @Override
   public List<LoggableData> getLoggableData() {
+    //Here - the path of the switch to set
       return List.of(new LoggableString(
-        getName() + "/switch to set", //Number key if there is more than one
+        getName() + "/switch to set",
         () -> m_switchPath));
   }
 

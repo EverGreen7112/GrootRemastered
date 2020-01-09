@@ -17,7 +17,7 @@ public class LoggableDouble extends LoggableData {
     }
     
     @Override
-   public void addToDashboard() {
+    public void addToDashboard() {
         SmartDashboard.putNumber(getKey(), m_stream.get());
     }
 

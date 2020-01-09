@@ -15,9 +15,20 @@ import com.evergreen.everlib.utils.InstantCommandEG;
 /*----------------------------------------------------------------------------*/
 
 
+/**A command to toggle a shuffleboard {@link ConstantBoolean}.
+ * @author Atai Ambus
+*/
 public class ToggleSwitch extends InstantCommandEG {
+  
   private String m_switchPath;
 
+  /**
+   * Constructs a {@link ToggleSwitch} command, which toggles an input
+   * {@link ConstantBoolean} switch.
+   * 
+   * @param name - The name of <i>this</i> com mand, for logging purposes (and its own switch)
+   * @param booleanSwitch - The switch to toggle.
+   */
   public ToggleSwitch(String name, ConstantBoolean booleanSwitch) {
     super(name, () -> booleanSwitch.toggle());
     m_switchPath = booleanSwitch.getPath();
@@ -27,7 +38,7 @@ public class ToggleSwitch extends InstantCommandEG {
   public List<LoggableData> getLoggableData() {
     return
       List.of(new LoggableString(
-        getName() + "switch to toggle", //Number key if there is more than one
+        getName() + "switch to toggle",
         () -> m_switchPath));
   }
 }

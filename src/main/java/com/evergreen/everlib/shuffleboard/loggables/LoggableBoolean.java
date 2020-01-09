@@ -17,7 +17,7 @@ public class LoggableBoolean extends LoggableData {
     }
     
     @Override
-   public void addToDashboard() {
+    public void addToDashboard() {
         SmartDashboard.putBoolean(getKey(), m_stream.get());
     }
 

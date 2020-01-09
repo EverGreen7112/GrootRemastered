@@ -16,13 +16,8 @@ public class LoggableInt extends LoggableData {
         m_stream = stream;
     }
 
-    public LoggableInt(String key, int constant) {
-        super(key);
-        m_stream = () -> constant;
-    }
-    
     @Override
-   public void addToDashboard() {
+    public void addToDashboard() {
         SmartDashboard.putNumber(getKey(), m_stream.get());
     }
 

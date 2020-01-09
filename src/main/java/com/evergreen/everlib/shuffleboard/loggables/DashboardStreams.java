@@ -53,10 +53,14 @@ public class DashboardStreams {
 
     public static void addLoggable(LoggableObject loggable) {
 
+        DashboardStreams.cd(loggable.getName());
+
         for (LoggableData loggableData : loggable.getLoggableData()) 
         {
             log(loggableData);
         }
+
+        DashboardStreams.cd("..");
     }
 
 

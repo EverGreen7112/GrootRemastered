@@ -5,12 +5,12 @@ import com.evergreen.everlib.shuffleboard.constants.ConstantBoolean;
 import com.evergreen.everlib.subsystems.motors.commands.MoveMotorSystem;
 import com.evergreen.robot.OI;
 import com.evergreen.robot.Groot;
-import com.evergreen.robot.SubsystemConstants;
+import com.evergreen.robot.SubsystemConstants.ElevatorConstants;
 
 /**
  * ElevatorDefault
  */
-public class ElevatorDefault extends CommandEG implements SubsystemConstants.ElevatorConstants {
+public class ElevatorDefault extends CommandEG {
 
     private static final ElevatorDefault m_instance = new ElevatorDefault();
     private final static ConstantBoolean m_speedLockSwitch = new ConstantBoolean("Elevator Stall");
@@ -25,7 +25,7 @@ public class ElevatorDefault extends CommandEG implements SubsystemConstants.Ele
     private boolean speedLocked = false;
 
     CommandEG baseDefault = new MoveMotorSystem("Elevator Default Movement",
-     Groot.elevator, OI.JSButton()::getY, speedModifier);
+     Groot.elevator, OI.JSButton()::getY, ElevatorConstants.speedModifier);
     CommandEG speedLock = new MoveMotorSystem("Elevator Stall", Groot.elevator, () -> lastSpeed);
 
     @Override

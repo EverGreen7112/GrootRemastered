@@ -7,6 +7,7 @@
 
 package com.evergreen.robot;
 
+import com.evergreen.everlib.shuffleboard.constants.DashboardConstants;
 import com.evergreen.everlib.shuffleboard.loggables.DashboardStreams;
 import com.evergreen.everlib.subsystems.motors.subsystems.DriveTank;
 import com.evergreen.everlib.subsystems.motors.subsystems.MotorSubsystem;
@@ -58,7 +59,32 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void robotInit() {
-    //-------------Default Commands
+    //-------------Constant Organization-------------
+    DashboardConstants.getInstance().move("/Elevator", 
+      ElevatorConstants.laserIntercept,
+      ElevatorConstants.laserSlope,
+      ElevatorConstants.speedModifier,
+      ElevatorConstants.targetSpeedModifier,
+      ElevatorConstants.bottomStall, 
+      ElevatorConstants.middleStall,
+      ElevatorConstants.topStall);
+
+    DashboardConstants.getInstance().move("Laser", ElevatorConstants.laserSlope, ElevatorConstants.laserIntercept);
+    DashboardConstants.getInstance().move("Speeds", ElevatorConstants.speedModifier, ElevatorConstants.targetSpeedModifier);
+    DashboardConstants.getInstance().move("Stall Speeds", ElevatorConstants.bottomStall, ElevatorConstants.middleStall, ElevatorConstants.topStall);
+
+
+    DashboardConstants.getInstance().move("/Gripper", 
+    GripperConstants.cargoDistance,
+    GripperConstants.inSpeed,
+    GripperConstants.outSpeed,
+    GripperConstants.laserOffset,
+    GripperConstants.laserSlope);
+
+
+    
+
+    //-------------Default Commands-------------
     // elevator.setDefaultCommand(new ElevatorDefault());
     
     // chassis.setDefaultCommand(new TankDrive(
@@ -69,6 +95,7 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
 
     // cargoGripper.move(0.7);
     
+    //-------------Initialization
     gripperMovement.toggle();
 
     DashboardStreams.addLoggable(cargoGripper);
@@ -104,9 +131,6 @@ public class Groot extends TimedRobot implements SubsystemComponents, SubsystemC
    */
   @Override
   public void autonomousPeriodic() {
-    // gripperMovement.setForward(); //Folded
-    // hatchGripper.setForward(); //In
-    // hatchHolder.setForward(); //Out
 
   }
 

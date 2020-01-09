@@ -12,18 +12,31 @@ import com.evergreen.everlib.utils.PIDSettings;
  */
 public interface SubsystemConstants {
 
-    public interface ElevatorConstants {
+    public static class ElevatorConstants {
+        
+        static
+        {
+            DashboardConstants.getInstance().startConstantsOf("Elevator");
+            DashboardConstants.getInstance().cd("Sensors Info");
+        }
 
-        Explorer namespace = DashboardConstants.getInstance().cd("/Elevator/Constants");
-
-        public final double 
+        public static final double 
             MAX_HEIGHT = new ConstantDouble("MAX HEIGHT", 225.0).get(),
-            
             ENCODER_HEIGHT = new ConstantDouble("ENCODER HEIGHT", 47.0).get(),
-            LASER_HEIGHT = new ConstantDouble("LASER HEIGHT", 32.0).get(),
-            
-            DISTANCE_PER_ENCODER_PULSE = new ConstantDouble("ELEVATOR ENCODER DPP", 0.8157894).get(),
-            
+            ENCODER_DPP = new ConstantDouble("ENCODER DPP", 0.8157894).get(), //Distance Per pulse
+            LASER_HEIGHT = new ConstantDouble("LASER HEIGHT", 32.0).get();
+        
+        public static final ConstantDouble
+            laserSlope = new ConstantDouble("Laser Slope", 1.0),
+            laserIntercept =  new ConstantDouble("Laser Intercept", 0.0);
+
+        
+        static
+        {
+            DashboardConstants.getInstance().cd("../Level Heights");
+        }
+
+        public static final double
             BOTTOM_HATCH_HEIGHT = new ConstantDouble("BOTTOM HATCH LEVEL HEIGHT", 48.26).get(),
             MIDDLE_HATCH_HEIGHT = new ConstantDouble("MIDDLE HATCH LEVEL HEIGHT", 119.38).get(),
             TOP_HATCH_HEIGHT = new ConstantDouble("TOP HATCH LEVLE HEIGHT", 190.5).get(),
@@ -31,63 +44,81 @@ public interface SubsystemConstants {
             MIDDLE_CARGO_HEIGHT = new ConstantDouble("MIDDLE CARGO LEVEL HEIGHT", 140.97).get(),
             TOP_CARGO_HEIGHT = new ConstantDouble("TOP CARGO HEIGHT HEIGHT", 212.09).get();
 
-        public final ConstantDouble
-            laserSlope = new ConstantDouble("Laser Sensor/Slope", 1.0),
-            laserIntercept =  new ConstantDouble("Laser Sensor/Intercept", 0.0),
 
-            speedModifier = new ConstantDouble("Speed Modifier", 0.7),
-            
-            targetSpeedModifier = new ConstantDouble(" Movement to target speed", 0.7),
+        static
+        {
+            DashboardConstants.getInstance().cd("../Speeds");
+        }
 
-            bottomStall = new ConstantDouble("Bottom Levels Stall Power", 0.0),
-            middleStall = new ConstantDouble("Middle Levels Stall Power", 0.13),
-            topStall = new ConstantDouble("Top Levels Stall Power", 0.15);
+        public static final ConstantDouble
+            speedModifier = new ConstantDouble("Drive", 0.7),
+            targetSpeedModifier = new ConstantDouble("Target", 0.7);
 
-        // PIDSettings pidSettings = new PIDSettings(0, 0, 0);
+        static
+        {
+            DashboardConstants.getInstance().cd("Stall Power");
+        }
+        
+        public static final ConstantDouble
+            bottomStall = new ConstantDouble("Bottom", 0.0),
+            middleStall = new ConstantDouble("Middle", 0.13),
+            topStall = new ConstantDouble("Top", 0.15);
+
+        // public static final PIDSettings pidSettings = new PIDSettings(0, 0, 0);
 
     }
 
     /**
      * GripperConstants
      */
-    public interface GripperConstants {
-        Explorer namespace = DashboardConstants.getInstance().cd("/Gripper/Cargo/Constants");
+    public static class GripperConstants {
 
-        ConstantDouble
-            laserSlope = new ConstantDouble("Cargo Gripper Constants/Laser/Slope", 1.0),
-            laserOffset = new ConstantDouble("Cargo Gripper Constants/Laser/Offset", 2.0),
-            cargoDistance = new ConstantDouble("Cargo Gripper Constants/Gripping Distance", 0.2),
+        static
+        {
+            DashboardConstants.getInstance().startConstantsOf("Cargo Gripper");
+        }
 
-            inSpeed = new ConstantDouble("Cargo Gripper Constants/Catch Speed", 0.8),
-            outSpeed = new ConstantDouble("Cargo Gripper Constants/release speed", -0.7);
+        public static final ConstantDouble
+            laserSlope = new ConstantDouble("Laser/Slope", 1.0),
+            laserOffset = new ConstantDouble("Laser/Offset", 2.0),
+            cargoDistance = new ConstantDouble("Misc/Gripping Distance", 0.2),
+
+            inSpeed = new ConstantDouble("Speeds/Catch", 0.8),
+            outSpeed = new ConstantDouble("Speeds/Release", -0.7);
     }
 
     /**
      * ChassisConstants
      */
-    public interface ChassisConstants {
+    public static class ChassisConstants {
 
-        Explorer namespace = DashboardConstants.getInstance().cd("/Chassis/Constants");
-        ConstantDouble driveSpeed = new ConstantDouble("Speed Modifier", 0.8);
+        static
+        {
+            DashboardConstants.getInstance().startConstantsOf("Chassis");
+            DashboardConstants.getInstance().cd("Speeds");
+        }
 
-
-        Explorer speedNameSpace = DashboardConstants.getInstance().cd("Speeds");
-        ConstantDouble
+        public static final ConstantDouble
+            driveSpeed = new ConstantDouble("Speed Modifier", 0.8),    
             fastSpeed = new ConstantDouble("Fast", 1.0),
             defenseSpeed = new ConstantDouble("slow", 0.4),
             autoSpeed = new ConstantDouble("Autonomous", 0.1);
+            
+        static
+        {
+            DashboardConstants.getInstance().cd("../Smart P");
+        }
 
-        Explorer smartPNameSpace = DashboardConstants.getInstance().cd("../Smart P");
-        ConstantDouble
+        public static final ConstantDouble
             smartPMaxFix = new ConstantDouble("Max Fix", 0.8),
             maxStaticFriction = new ConstantDouble(
-                "Smart P/max static friction", 0.0115);
+                "max static friction", 0.0115);
         
 
-        Supplier<Double> 
+        public static final Supplier<Double> 
             speedModifier = () -> Utilities.smartP.get() ? driveSpeed.get() : autoSpeed.get();
         
-            PIDSettings pidSettings = new PIDSettings(Groot.chassis, 0, 0, 0);
+        public static final PIDSettings pidSettings = new PIDSettings(Groot.chassis, 0, 0, 0);
     }
 
 }

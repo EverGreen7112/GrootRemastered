@@ -37,7 +37,7 @@ public interface SubsystemComponents extends RobotMap{
                 EncoderPorts.elevatorA, EncoderPorts.elevatorB, //Ports
                 new MaxLimit(ElevatorConstants.MAX_HEIGHT),  //Expected value range
                 ElevatorConstants.ENCODER_HEIGHT, //offset
-                ElevatorConstants.DISTANCE_PER_ENCODER_PULSE) //distacne per pulse
+                ElevatorConstants.ENCODER_DPP) //distacne per pulse
             
             );
     }

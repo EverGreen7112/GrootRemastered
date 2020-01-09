@@ -11,23 +11,23 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /**
  * MoveElevatorToLevel
  */
-public class MoveElevatorToLevel extends SequentialCommandGroup implements ElevatorConstants {
+public class MoveElevatorToLevel extends SequentialCommandGroup {
 
     public MoveElevatorToLevel(Level level) {
 
         addCommands(
-            new MotorSystemBangBang(Groot.elevator, targetSpeedModifier, 
+            new MotorSystemBangBang(Groot.elevator, ElevatorConstants.targetSpeedModifier, 
                 () -> level.m_height, level.m_name),
             new MoveMotorSystem(this.getName() + " - Stall", Groot.elevator, level.m_stall));
     }
 
     public enum Level {
-        BOTTOM_HATCH(BOTTOM_HATCH_HEIGHT, bottomStall, "Bottom Hatch"),
-        MIDDLE_HATCH(MIDDLE_HATCH_HEIGHT, middleStall, "Middle Hatch"),
-        TOP_HATCH(TOP_HATCH_HEIGHT, topStall, "Top Hatch"),
-        BOTTOM_CARGO(BOTTOM_CARGO_HEIGHT, bottomStall, "Bottom Cargo"),
-        MIDDLE_CARGO(MIDDLE_CARGO_HEIGHT, middleStall, "Middle Cargo"),
-        TOP_CARGO(TOP_CARGO_HEIGHT, topStall, "Top Cargo");
+        BOTTOM_HATCH(ElevatorConstants.BOTTOM_HATCH_HEIGHT, ElevatorConstants.bottomStall, "Bottom Hatch"),
+        MIDDLE_HATCH(ElevatorConstants.MIDDLE_HATCH_HEIGHT, ElevatorConstants.middleStall, "Middle Hatch"),
+        TOP_HATCH(ElevatorConstants.TOP_HATCH_HEIGHT, ElevatorConstants.topStall, "Top Hatch"),
+        BOTTOM_CARGO(ElevatorConstants.BOTTOM_CARGO_HEIGHT, ElevatorConstants.bottomStall, "Bottom Cargo"),
+        MIDDLE_CARGO(ElevatorConstants.MIDDLE_CARGO_HEIGHT, ElevatorConstants.middleStall, "Middle Cargo"),
+        TOP_CARGO(ElevatorConstants.TOP_CARGO_HEIGHT, ElevatorConstants.topStall, "Top Cargo");
 
         double m_height;
         String m_name;

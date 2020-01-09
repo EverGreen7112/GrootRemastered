@@ -13,11 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 
 
 /**
- * This class consists of the whileHeld, whileReleased annd whenPressed methods, like the ones
- * in {@link Button}, except instead of belonging to a specific {@link Button} object, they are static 
- * and recieve the buttons as parameters. The advantage here, over using the {@link Button}'s methods,
- * is that these methods can take arrays of buttons (using the eclipsis syntax), which can greatly
- * simplify code that uses multiple buttons for the same command.
+ * A utility class, allowing binding multiple buttons to the same command simultaneously.
+ * 
+ * @author Atai Ambus
  */
 public class GroupButtonBindings {
 

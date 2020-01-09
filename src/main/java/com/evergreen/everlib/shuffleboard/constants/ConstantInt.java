@@ -38,22 +38,11 @@ public class ConstantInt extends Constant implements Supplier<Integer> {
     public void increasePercentage(int percentage, int maxValue) {
         m_defaultVal += maxValue * (percentage / 100);
         addToDashboard();
-    }
+    } 
 
-    public void increasePercentage(int percentage) {
-        increasePercentage(percentage, m_defaultVal);
-    }
-
-    public void lowerAbsolute(int lowerBy) {
-        increaseAbsolute(-lowerBy);
-    }
-
-    public void lowerPercentage(int percentage, int maxValue) {
-        increasePercentage(-percentage, maxValue);
-    }
-
-    public void lowerPercentage(int percentage) {
-        increasePercentage(-percentage);
+    public void setValue(int newValue) {
+        m_defaultVal = newValue;
+        reset();
     }
 
     @Override
