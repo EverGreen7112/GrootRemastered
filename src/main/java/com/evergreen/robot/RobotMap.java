@@ -33,8 +33,8 @@ public interface RobotMap {
     public int
       toungeForward = 0,
       toungeReverse = 1,
-      gripperMovementForward = 2,
-      gripperMovementReverse = 3,
+      gripperFlipperForward = 2,
+      gripperFlipperReverse = 3,
       pushForward = 4,
       pushReverse = 5;
   }

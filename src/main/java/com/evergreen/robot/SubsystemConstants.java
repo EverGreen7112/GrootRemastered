@@ -1,10 +1,7 @@
 package com.evergreen.robot;
 
-import java.util.function.Supplier;
-
 import com.evergreen.everlib.shuffleboard.constants.ConstantDouble;
 import com.evergreen.everlib.shuffleboard.constants.DashboardConstants;
-import com.evergreen.everlib.shuffleboard.handlers.Explorer;
 import com.evergreen.everlib.utils.PIDSettings;
 
 /**
@@ -17,7 +14,7 @@ public interface SubsystemConstants {
         static
         {
             DashboardConstants.getInstance().startConstantsOf("Elevator");
-            DashboardConstants.getInstance().cd("Sensors Info");
+            DashboardConstants.getInstance().cd("Encoder");
         }
 
         public static final double 
@@ -113,12 +110,9 @@ public interface SubsystemConstants {
             smartPMaxFix = new ConstantDouble("Max Fix", 0.8),
             maxStaticFriction = new ConstantDouble(
                 "max static friction", 0.0115);
+    
         
-
-        public static final Supplier<Double> 
-            speedModifier = () -> Utilities.smartP.get() ? driveSpeed.get() : autoSpeed.get();
-        
-        public static final PIDSettings pidSettings = new PIDSettings(Groot.chassis, 0, 0, 0);
+        public static final PIDSettings pidSettings = new PIDSettings(Groot.getChassis(), 0, 0, 0);
     }
 
 }

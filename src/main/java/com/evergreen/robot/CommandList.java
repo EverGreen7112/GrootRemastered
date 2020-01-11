@@ -25,9 +25,9 @@ public interface CommandList {
     public interface CargoGripperCommands {
         public static final MoveMotorSystem 
             take = new MoveMotorSystem(
-                "Catch (x)", Groot.cargoGripper, GripperConstants.inSpeed),
+                "Catch (x)", Groot.getCargoGripper(), GripperConstants.inSpeed),
 
-            release = new MoveMotorSystem("Release (B)", Groot.cargoGripper, 
+            release = new MoveMotorSystem("Release (B)", Groot.getCargoGripper(), 
                 GripperConstants.outSpeed);
     }
 
@@ -36,20 +36,20 @@ public interface CommandList {
      */
     public interface HatchGripperCommands {
         SetPistonSubsystem
-            takeIn = new SetPistonSubsystem("Take In", Groot.hatchGripper, Value.kForward),
-            takeOut = new SetPistonSubsystem("Take Out", Groot.hatchGripper, Value.kReverse),
+            takeIn = new SetPistonSubsystem("Take In", Groot.getHatchGripper(), Value.kForward),
+            takeOut = new SetPistonSubsystem("Take Out", Groot.getHatchGripper(), Value.kReverse),
 
-            grip = new SetPistonSubsystem("Catch", Groot.hatchHolder, Value.kForward),
-            release = new SetPistonSubsystem("Release", Groot.hatchHolder, Value.kForward);
+            grip = new SetPistonSubsystem("Catch", Groot.getHatchHolder(), Value.kForward),
+            release = new SetPistonSubsystem("Release", Groot.getHatchHolder(), Value.kForward);
     }
 
     /**
-     * GripperMovementCommands
+     * GripperFlipperCommands
      */
-    public interface GripperMovementCommands {
+    public interface GripperFlipperCommands {
         SetPistonSubsystem _caution = new SetPistonSubsystem(
-            "Gripper Flip Caution", Groot.hatchGripper, Value.kReverse);
-        TogglePistonSubsystem _flip = new TogglePistonSubsystem("Flip", Groot.gripperMovement);
+            "Gripper Flip Caution", Groot.getHatchGripper(), Value.kReverse);
+        TogglePistonSubsystem _flip = new TogglePistonSubsystem("Flip", Groot.getGripperFlipper());
         
         Command flip = _caution.andThen(_flip);
     }
@@ -83,6 +83,6 @@ public interface CommandList {
 
         ToggleSwitch 
             toggleSpeedLock = new ToggleSwitch(
-                Groot.elevator.getName() + "/Commands/Toggle Speed Lock" , ElevatorDefault.getStallSwitch());
+                Groot.getElevator().getName() + "/Commands/Toggle Speed Lock" , ElevatorDefault.getStallSwitch());
     }
 }

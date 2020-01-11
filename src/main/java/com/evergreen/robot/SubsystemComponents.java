@@ -58,7 +58,7 @@ public interface SubsystemComponents extends RobotMap{
             AnalogPorts.gripper, GripperConstants.laserSlope, GripperConstants.laserOffset);
     }
 
-    public interface GripperPanelComponents {
+    public interface HatchGripperComponents {
         DoubleSolenoid 
             toungePistons = new DoubleSolenoid (
                 PistonsPorts.toungeForward, PistonsPorts.toungeReverse),
@@ -68,10 +68,10 @@ public interface SubsystemComponents extends RobotMap{
     }
 
     /**
-     * GripperMovementComponents
+     * GripperFlipperComponents
      */
-    public interface GripperMovementComponents {
+    public interface GripperFlipperComponents {
         static DoubleSolenoid pistons = new DoubleSolenoid (
-            PistonsPorts.gripperMovementForward, PistonsPorts.gripperMovementReverse);
+            PistonsPorts.gripperFlipperForward, PistonsPorts.gripperFlipperReverse);
     }
 }

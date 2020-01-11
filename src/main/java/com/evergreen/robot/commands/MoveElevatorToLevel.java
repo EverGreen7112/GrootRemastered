@@ -16,9 +16,9 @@ public class MoveElevatorToLevel extends SequentialCommandGroup {
     public MoveElevatorToLevel(Level level) {
 
         addCommands(
-            new MotorSystemBangBang(Groot.elevator, ElevatorConstants.targetSpeedModifier, 
+            new MotorSystemBangBang(Groot.getElevator(), ElevatorConstants.targetSpeedModifier, 
                 () -> level.m_height, level.m_name),
-            new MoveMotorSystem(this.getName() + " - Stall", Groot.elevator, level.m_stall));
+            new MoveMotorSystem(this.getName() + " - Stall", Groot.getElevator(), level.m_stall));
     }
 
     public enum Level {

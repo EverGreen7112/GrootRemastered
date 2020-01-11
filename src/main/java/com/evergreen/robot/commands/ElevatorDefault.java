@@ -3,7 +3,6 @@ package com.evergreen.robot.commands;
 import com.evergreen.everlib.CommandEG;
 import com.evergreen.everlib.shuffleboard.constants.ConstantBoolean;
 import com.evergreen.everlib.subsystems.motors.commands.MoveMotorSystem;
-import com.evergreen.robot.OI;
 import com.evergreen.robot.Groot;
 import com.evergreen.robot.SubsystemConstants.ElevatorConstants;
 
@@ -17,7 +16,7 @@ public class ElevatorDefault extends CommandEG {
 
     private ElevatorDefault() {
         super("Elevator default command");
-        addRequirements(Groot.elevator);
+        addRequirements(Groot.getElevator());
     }
     
 
@@ -25,8 +24,8 @@ public class ElevatorDefault extends CommandEG {
     private boolean speedLocked = false;
 
     CommandEG baseDefault = new MoveMotorSystem("Elevator Default Movement",
-     Groot.elevator, OI.JSButton()::getY, ElevatorConstants.speedModifier);
-    CommandEG speedLock = new MoveMotorSystem("Elevator Stall", Groot.elevator, () -> lastSpeed);
+     Groot.getElevator(), Groot.JSButton()::getY, ElevatorConstants.speedModifier);
+    CommandEG speedLock = new MoveMotorSystem("Elevator Stall", Groot.getElevator(), () -> lastSpeed);
 
     @Override
     public void initialize() {
@@ -50,7 +49,7 @@ public class ElevatorDefault extends CommandEG {
 
         else if (!speedLocked)
         {
-            lastSpeed = OI.JSButton().getY();
+            lastSpeed = Groot.JSButton().getY();
         }
     }
 
