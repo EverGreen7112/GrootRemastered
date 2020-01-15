@@ -5,14 +5,23 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
- * LoggableNumber
+ * A constant of the integer data type, implementing {@link Supplier Supplier<Integer>}.
  */
 public class ConstantInt extends Constant implements Supplier<Integer> {
     
-    int m_defaultVal;
+    /**The value last set by the program (calling {@link #reset()} will change the value to this.)*/
+    private int m_defaultVal;
 
-    public ConstantInt(String key, int initValue) {
-        super(key, initValue);
+
+    /**
+     * Constructs a new {@link ConstantInt} with input name and adds it to the shuffleboard under the current 
+     * {@link DashboardConstants} path.
+     * 
+     * @param name - the constant's name
+     * @param initValue - the initial value when putting the constant on the shuffleboard.
+     */
+    public ConstantInt(String name, int initValue) {
+        super(name, initValue);
         m_defaultVal = initValue;
     }
     
@@ -40,11 +49,20 @@ public class ConstantInt extends Constant implements Supplier<Integer> {
         addToDashboard();
     } 
 
+
+    /**
+     * Sets the constant's default value the input integer, and then resets the shuffleboard box into that value.
+     * @param value - the value to set the constant to.
+     */
     public void setValue(int newValue) {
         m_defaultVal = newValue;
         reset();
     }
 
+
+    /**
+     * The current value of the constant on the shuffleboard..
+     */
     @Override
     public Integer get() {
         return Preferences.getInstance().getInt(getPath(), m_defaultVal);

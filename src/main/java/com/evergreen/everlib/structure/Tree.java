@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.evergreen.everlib.CommandEG;
+import com.evergreen.everlib.shuffleboard.constants.DashboardConstants;
 import com.evergreen.everlib.shuffleboard.loggables.DashboardStreams;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -15,6 +16,7 @@ public abstract class Tree extends TimedRobot {
     
     @Override
     public void robotInit() {
+        DashboardConstants.getInstance().cleanBoard();
         bindButtons();
         commandConfig();
         log();
@@ -32,7 +34,6 @@ public abstract class Tree extends TimedRobot {
     @Override
     public void teleopInit() {
         teleopConfig();
-
         for (CommandEG teleopCommand : getTeleopCommands()) {
             teleopCommand.schedule();
         }

@@ -36,6 +36,7 @@ public class ToggleSwitch extends InstantCommandEG {
 
   @Override
   public List<LoggableData> getLoggableData() {
+    //Here - the path of the switch to toggle.
     return
       List.of(new LoggableString(
         getName() + "switch to toggle",

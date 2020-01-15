@@ -46,7 +46,7 @@ public abstract class Constant {
     }
 
     /**
-     * @return the path to the current constanto on the shuffleboard (under Preferences).
+     * @return the shuffleboard path to this constant (under Preferences).
      */
     public String getPath() {
         return m_folder + "/" + m_name;
@@ -90,13 +90,18 @@ public abstract class Constant {
         addToDashboard();   
     }
 
-    
+    /**Adds the constant to the shuffleboard under its last set value and path */
     public abstract void addToDashboard();
     
+    /**Sets the constant's value to the value last set in the program, cancelling any changes made manually.*/
     public void reset() {
         addToDashboard();
     }
 
+    /**Removes this constant from the shuffleboard. 
+     * <p>
+     * If it was not yet added there, a mesage explaining so will be printed instead.
+    */
     public void remove() {
         if (wasAdded())
             Preferences.getInstance().remove(getPath());
@@ -107,10 +112,17 @@ public abstract class Constant {
                 m_name, m_folder));
     }
 
+    /**
+     * @return
+     * <i>True</i> if the constant is currently on the shuffleboard 
+     * <li><i>False</i> if the constant was not yet put there. </li>
+     */
     public boolean wasAdded() {
         return Preferences.getInstance().containsKey(getPath());
     }
 
-
+    /**
+     * @return A string describing the constant data type (e.g "Boolean", "Integer", etc.)
+     */
     public abstract String getType();
 }

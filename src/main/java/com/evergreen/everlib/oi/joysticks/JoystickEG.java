@@ -94,9 +94,9 @@ public class JoystickEG extends Joystick implements LoggableObject {
     }
 
     @Override
-    public double getRawAxis(int axis) throws OIExceptions.AxisDoesNotExistException {
+    public double getRawAxis(int axis) throws OIExceptions.InvalidAxisException {
         if (axis > AXES_NUM)
-            throw new OIExceptions.AxisDoesNotExistException();
+            throw new OIExceptions.InvalidAxisException();
 
         double value = super.getRawAxis(axis);
 
@@ -110,7 +110,7 @@ public class JoystickEG extends Joystick implements LoggableObject {
         return value;
     }
 
-    public double getRawAxis(Joystick.AxisType axis) throws OIExceptions.AxisDoesNotExistException {
+    public double getRawAxis(Joystick.AxisType axis) throws OIExceptions.InvalidAxisException {
         return getRawAxis(axis.value);
     }
 
