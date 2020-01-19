@@ -37,6 +37,13 @@ deploy {
     }
 }
 
+
+repositories {
+    maven {
+        url "https://mymavenrepo.com/repo/J2l8WZYbO7zaNPK3awQK/"
+    }
+}
+
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
@@ -53,6 +60,8 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
     testImplementation 'junit:junit:4.12'
+    implementation "com.evergreen:EverLib:0.8.0"
+
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
