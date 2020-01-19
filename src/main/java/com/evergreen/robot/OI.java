@@ -21,11 +21,11 @@ import com.evergreen.robot.commands.ElevatorDefault;
 public class OI implements RobotMap, SubsystemConstants {
 
     private static final ExtremeProJoystick 
-        m_drivingLeft = new ExtremeProJoystick(JoytsickPorts.leftChassis),
-        m_drivingRight = new ExtremeProJoystick(JoytsickPorts.rightChassis);
+        m_drivingLeft = new ExtremeProJoystick("Joystick Left", JoytsickPorts.leftChassis),
+        m_drivingRight = new ExtremeProJoystick("Joystick Right", JoytsickPorts.rightChassis);
     
     private static final F310GamePad    
-        m_buttonJoystick = new F310GamePad(JoytsickPorts.button);
+        m_buttonJoystick = new F310GamePad("Joystick Button",JoytsickPorts.button);
     
     static {
         //------------Joystick Set Up------------
@@ -46,20 +46,20 @@ public class OI implements RobotMap, SubsystemConstants {
          
 
         //------Cargo Gripper-----
-        m_buttonJoystick.get(F310.X).whileHeld(CargoGripperCommands.take);
-        m_buttonJoystick.get(F310.B).whileHeld(CargoGripperCommands.release);
+        m_buttonJoystick.getButton(F310.X).whileHeld(CargoGripperCommands.take);
+        m_buttonJoystick.getButton(F310.B).whileHeld(CargoGripperCommands.release);
         
         //Hatch Gripper
-        m_buttonJoystick.get(F310.Y).whenPressed(HatchGripperCommands.takeIn);
+        m_buttonJoystick.getButton(F310.Y).whenPressed(HatchGripperCommands.takeIn);
         
-        m_buttonJoystick.get(F310.A).whenPressed(HatchGripperCommands.takeOut);
+        m_buttonJoystick.getButton(F310.A).whenPressed(HatchGripperCommands.takeOut);
 
         //Hatch Holder
-        m_buttonJoystick.get(F310.RB).whenPressed(HatchGripperCommands.grip);
-        m_buttonJoystick.get(F310.LB).whenPressed(HatchGripperCommands.release);
+        m_buttonJoystick.getButton(F310.RB).whenPressed(HatchGripperCommands.grip);
+        m_buttonJoystick.getButton(F310.LB).whenPressed(HatchGripperCommands.release);
 
         //----Gripper Movement-----
-        m_buttonJoystick.get(F310.JOYSTICK_RIGHT).whenPressed(GripperMovementCommands.flip); //Flip gripper.
+        m_buttonJoystick.getButton(F310.JOYSTICK_RIGHT).whenPressed(GripperMovementCommands.flip); //Flip gripper.
 
         //-----Elevator-----
         m_drivingLeft.getButton(X.RIGHT, Y.BACK, Z.BOTTOM)
@@ -81,7 +81,7 @@ public class OI implements RobotMap, SubsystemConstants {
         m_drivingLeft.getButton(X.LEFT, Y.FORWARD, Z.BOTTOM)
            .whenPressed(ElevatorCommands.toTopCargo);
         
-        m_buttonJoystick.get(F310.BACK).whileHeld(new ToggleSwitch(
+        m_buttonJoystick.getButton(F310.BACK).whileHeld(new ToggleSwitch(
             "Toggle Elevator SpeedLock", ElevatorDefault.getStallSwitch()));
 
     }
